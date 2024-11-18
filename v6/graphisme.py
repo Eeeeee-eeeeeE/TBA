@@ -1,4 +1,4 @@
-from room import Room
+from v6.room import Room
 from player import Player
 from command import Command
 from actions import Actions
