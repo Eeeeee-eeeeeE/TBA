@@ -1,9 +1,8 @@
 # TBA
 
-Ce repo contient la première version (minimale) du jeu d’aventure TBA.
+Ce repo contient la première version modifiée du jeu d’aventure TBA (une première version).
 
-Les lieux sont au nombre de 6. Il n'y a pas encore d’objets ni de personnages autres que le joueur et très peu d’interactions. Cette première version sert de base à ce qui va suivre, et sera améliorée au fur et à mesure.
-
+Ce qui a été implémenté en plus de la v0 est un passage interdit entre la forêt et la tour, un sens unique du marécage vers la tour, la gestion de la commande vide 
 
 ## Structuration
 
