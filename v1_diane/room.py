@@ -2,32 +2,31 @@
 
 class Room:
     """
-    This class represents a room. A room is composed of a name, a description, a direction.
+    This class represents a place. A place is composed of a name, a description, a direction.
 
     Attributes:
-        name (str): The name of the room.
-        description (str): The description of the room.
-        direction (function): The direction the player wants to go to.
+        name (str): The name of the place.
+        description (str): The description of the place.
+        exits (dict): The exits of the place.
 
     Methods:
         __init__(self, name, description) : The constructor.
-        get_exit(self, direction) : The string representation of the command.
-        get_exit_string(self) :
-        get_long_description(self) :
+        get_exit(self, direction) : Returns the adjacent place in the given direction if it exists.
+        get_exit_string(self) : Returns a character string with the exits of the place.
+        get_long_description(self) : Returns a description of the place with the place's description and the outputs of the place.
 
     Examples:
 
-    >>> from actions import go
-    >>> command = Command("go", "Permet de se déplacer dans une direction.", go, 1)
-    >>> command.command_word
-    'go'
-    >>> command.help_string
-    'Permet de se déplacer dans une direction.'
-    >>> type(command.action)
-    <class 'function'>
-    >>> command.number_of_parameters
-    1
-
+    >>> room = Room("test", "dans un espace de test.")
+    >>> room.name
+    'test'
+    >>> room.description
+    'dans un espace de test.'
+    >>> type(room.exits)
+    <class 'dict'>
+    >>> room.exits
+    {}
+    
     """
     # Define the constructor. 
     def __init__(self, name, description):
