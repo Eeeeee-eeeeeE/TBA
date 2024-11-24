@@ -1,6 +1,27 @@
 # Define the Player class.
 class Player():
+    
+ """
+    This class represents a player. A player is characterized by a name and the location where he is located.
 
+    Attributes:
+        name (str): The player's name.
+        current_room (Room): The place where the player is located.
+
+    Methods:
+        __init__(self, name): The constructor.
+        move(self, direction): Changes the location where the player is to the location in the given direction (and returns true) if possible.
+    
+    Examples:
+
+    >>> player = Player("mrtest")
+    >>> player.name
+    'mrtest'
+    >>> type(player.current_room)
+    <class 'NoneType'>
+    
+    """
+    
     # Define the constructor.
     def __init__(self, name):
         self.name = name
