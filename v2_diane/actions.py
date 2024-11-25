@@ -16,7 +16,7 @@ MSG0 = "\nLa commande '{command_word}' ne prend pas de paramètre.\n"
 # The MSG1 variable is used when the command takes 1 parameter.
 MSG1 = "\nLa commande '{command_word}' prend 1 seul paramètre.\n"
 # The MSG2 variable is used when the command is used with an invalid direction.
-MSG2 = "\nLa direction '{direction}' non reconnue.\n"
+MSG2 = "\nLa direction '{direction}' non reconnue."
 
 class Actions:
 
@@ -78,7 +78,7 @@ class Actions:
         else :
             command_word = list_of_words[0]
             print(MSG2.format(direction=direction))
-            print(game.player.current_room)
+            print(game.player.current_room.get_long_description())
         return True
 
     def quit(game, list_of_words, number_of_parameters):
