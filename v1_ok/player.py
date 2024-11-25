@@ -1,7 +1,6 @@
 # Define the Player class.
 class Player():
-    
- """
+    """
     This class represents a player. A player is characterized by a name and the location where he is located.
 
     Attributes:
@@ -19,7 +18,6 @@ class Player():
     'mrtest'
     >>> type(player.current_room)
     <class 'NoneType'>
-    
     """
     
     # Define the constructor.
