@@ -9,6 +9,8 @@ from character import Caracter
 import tkinter as tk
 from tkinter import messagebox
 
+import csv 
+
 DEBUG = True
 
 # Classe de base pour la logique du jeu
@@ -25,8 +27,17 @@ class GameLogic():
         self.warning = ""
         self.nb = 0 #nb intructions
 
+        self.donnees = "donnees.csv" #[besoin recup?, game.rooms.numeroi, game.player.attribui, game.knowndirection, game.commands.attr1numi, ]
+
     # Setup the game
     def setup(self):
+
+        with open(self.donnees, mode='r', encoding='utf8') as f:
+            r = csv.reader(f)
+            l = list(r)
+            if l[1][0] == "True":
+
+                
 
         # Setup commands
 
