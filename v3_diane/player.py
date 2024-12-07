@@ -18,8 +18,7 @@ class Player():
             return False
         
         #add current_room to the hitory before moving to another room
-        description_split =self.current_room.description.split('.')
-        self.history.append(description_split[0])
+        self.history.append(self.current_room)
         # Set the current room to the next room.
         self.current_room = next_room
         print(self.current_room.get_long_description())
@@ -30,7 +29,8 @@ class Player():
     def get_history(self):
         l_room =''
         for r in self.history :
-            l_room = l_room + '- ' + r + '\n'
+            description_split =r.description.split('.')
+            l_room = l_room + '- ' + description_split[0] + '\n'
         return f"Vous avez déjà visité les pièces suivantes:\n{l_room}"
         
     
