@@ -33,7 +33,7 @@ class Game:
 
         wardrobeO = Room("WardrobeO", "la partie de gauche d'une grande salle lugubre sans fenêtre.")
         self.rooms.append(wardrobeO)
-        wardrobeE = Room("WardrobeE", "la partie de droite d'une grande salle lugubre sans fenêtre.")
+        wardrobeE = Room("WardrobeE", "a partie de droite d'une grande salle lugubre sans fenêtre.")
         self.rooms.append(wardrobeE)
         enigma = Room("Enigma", "une salle modeste. Devant vous se tient un petit monsieur à l'air malicieux.")
         self.rooms.append(enigma)
@@ -60,7 +60,7 @@ class Game:
         glitter.exits = {"N" : None, "E" : None, "S" : None, "O" : brokenglass, "U" : None, "D" : out}
         musty.exits = {"N" : None, "E" : out, "S" : None, "O" : None, "U" : None, "D" : None}
         out.exits = {"N" : None, "E" : tree, "S" : None, "O" : musty, "U" : glitter, "D" : None}
-        tree.exits = {"N" : None, "E" : None, "S" : None, "O" : out, "U" : None, "D" : None}
+        tree.exits = {"N" : None, "E" : None, "S" : None, "O" : tree, "U" : None, "D" : None}
 
         #Set of all the possible directions
         self.possible_direction = {k for r in self.rooms for k in r.exits.keys() }
