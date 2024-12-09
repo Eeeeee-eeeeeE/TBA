@@ -30,6 +30,8 @@ class Game:
         self.commands["go"] = go
         back = Command("back", " : retour à la pièce précédente", Actions.back, 0)
         self.commands["back"] = back
+        look = Command("look", " : affiche la liste des items dans la pièce", Actions.look, 0)
+        self.commands["look"] = look
         
         # Setup rooms
 

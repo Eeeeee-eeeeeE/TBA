@@ -34,12 +34,11 @@ class Player():
             l_room = l_room + '- ' + description_split[0] + '\n'
         return f"Vous avez déjà visité les pièces suivantes:\n{l_room}"
     
-    def get_inventory():
-        if self.inventory == {}
-
-        l_item =''
-        for i in self.inventory :
-            description_split =r.description.split('.')
-            l_room = l_room + '- ' + description_split[0] + '\n'
-        return f"Vous avez déjà visité les pièces suivantes:\n{l_room}"
-    
+    def get_inventory(self):
+        if self.inventory == {} :
+            return f"Votre inventaire est vide."
+        else :
+            l_item = ''
+            for i in self.inventory :
+                l_item = l_item + '- ' + print(i) + '\n'
+            return f"Vous disposez des items suivants :\n{l_item}"

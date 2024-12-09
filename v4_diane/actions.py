@@ -163,11 +163,53 @@ class Actions:
         return True
     
     def back(game, list_of_words, number_of_parameters):
+        """
+        If possible, the player goes back to the previous room.
+        
+        Args:
+            game (Game): The game object.
+            list_of_words (list): The list of words in the command.
+            number_of_parameters (int): The number of parameters expected by the command.
+
+        Returns:
+            bool: True if the command was executed successfully, False otherwise.
+        """
+        # If the number of parameters is incorrect, print an error message and return False.
+        l = len(list_of_words)
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+
         if(len(game.player.history) > 0):
             game.player.current_room= game.player.history.pop()
             print(game.player.current_room.get_long_description())
             if(len(game.player.history) > 0):
                 print(game.player.get_history())
+            return True
         else :
             print(MSG3)
             print(game.player.current_room.get_long_description())
+            return True
+
+    def look(game, list_of_words, number_of_parameters):
+        """
+        Print the list of the items in the room.
+        
+        Args:
+            game (Game): The game object.
+            list_of_words (list): The list of words in the command.
+            number_of_parameters (int): The number of parameters expected by the command.
+
+        Returns:
+            bool: True if the command was executed successfully, False otherwise.
+        """
+        # If the number of parameters is incorrect, print an error message and return False.
+        l = len(list_of_words)
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+        
+        print(game.player.current_room.get_inventory())
+        return True
