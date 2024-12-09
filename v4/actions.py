@@ -192,7 +192,6 @@ class Actions:
             command_word = list_of_words[0]
             print(MSG0.format(command_word=command_word))
             return False
-        
         player.current_room.inventory.get_inventory()
 
 

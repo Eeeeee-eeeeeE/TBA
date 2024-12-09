@@ -27,7 +27,7 @@ class GameLogic():
         self.warning = ""
         self.nb = 0 #nb intructions
 
-        self.donnees = "donnees.csv" #[besoin recup?, game.rooms.numeroi, game.player.attribui, game.knowndirection, game.commands.attr1numi, ]
+        self.donnees = "donnees.csv" #[besoin recup?, game.player.name, game.player.current_room, gameplayer.history, game.player.inventory_carcater, game.knowndirection, game.rooms.numeroi.name, game.room.numeoi.description, game.room.niumeroi.exits, game.room.niumeroi.inventory_caractere, game.inventory_caract.type, game.inventory_carct.caracter_dict, game.inventory_caract.inventory_dict]
 
     # Setup the game
     def setup(self):
@@ -36,7 +36,6 @@ class GameLogic():
             r = csv.reader(f)
             l = list(r)
             if l[1][0] == "True":
-
                 
 
         # Setup commands
