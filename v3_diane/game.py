@@ -35,7 +35,7 @@ class Game:
 
         wardrobeO = Room("WardrobeO", "la partie de gauche d'une grande salle lugubre sans fenêtre.")
         self.rooms.append(wardrobeO)
-        wardrobeE = Room("WardrobeE", "a partie de droite d'une grande salle lugubre sans fenêtre.")
+        wardrobeE = Room("WardrobeE", "la partie de droite d'une grande salle lugubre sans fenêtre.")
         self.rooms.append(wardrobeE)
         enigma = Room("Enigma", "une salle modeste. Devant vous se tient un petit monsieur à l'air malicieux.")
         self.rooms.append(enigma)
