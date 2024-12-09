@@ -27,89 +27,146 @@ class GameLogic():
         self.warning = ""
         self.nb = 0 #nb intructions
 
-        self.donnees = "donnees.csv" #[besoin recup?, game.player.name, game.player.current_room, gameplayer.history, game.player.inventory_carcater, game.knowndirection, game.rooms.numeroi.name, game.room.numeoi.description, game.room.niumeroi.exits, game.room.niumeroi.inventory_caractere, game.inventory_caract.type, game.inventory_carct.caracter_dict, game.inventory_caract.inventory_dict]
-
+        self.donnees = "donnees.csv" #[game.player.name, game.player.current_room, gameplayer.history, game.player.inventory_carcater, game.knowndirection, game.rooms.numeroi.name, game.room.numeoi.description, game.room.niumeroi.exitsN,game.room.niumeroi.exitsS, game.room.niumeroi.exitsE, game.room.niumeroi.exitsO, game.room.niumeroi.exitsU, game.room.niumeroi.exitsD, game.room.niumeroi.inventory_caractere, game.inventory_caract.type, game.inventory_carct.caracter_dict, game.inventory_caract.inventory_dict]
+                            
     # Setup the game
     def setup(self):
 
         with open(self.donnees, mode='r', encoding='utf8') as f:
             r = csv.reader(f)
             l = list(r)
-            if l[1][0] == "True":
-                
+            if (len(l))==0):
 
-        # Setup commands
+                # Setup commands
 
-        help = Command("help", " : afficher cette aide", Actions.help, 0)
-        self.commands["help"] = help
-        quit = Command("quit", " : quitter le jeu", Actions.quit, 0)
-        self.commands["quit"] = quit
-        go = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O)", Actions.go, 1)
-        self.commands["go"] = go
-        back = Command("back", " : revenir en arrière", Actions.back, 0)
-        self.commands["back"] = back
-        look = Command("look", " : regarder les items présents dans la pièce", Actions.look, 0)
-        self.commands["look"] = look
-        take = Command("take", " <item> : prendre un des items présents dans la pièce", Actions.take, 1)
-        self.commands["take"] = take
-        drop = Command("drop", " : <item> enlever un des items que l'on possède", Actions.drop, 1)
-        self.commands["drop"] = drop
-        check = Command("check", " : regarder les items que l'on possède", Actions.check, 0)
-        self.commands["check"] = check
-        talk = Command("talk", " <someone> : parler à un pnj", Actions.talk, 1)
-        self.commands["talk"] = talk
+                help = Command("help", " : afficher cette aide", Actions.help, 0)
+                self.commands["help"] = help
+                quit = Command("quit", " : quitter le jeu", Actions.quit, 0)
+                self.commands["quit"] = quit
+                go = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O)", Actions.go, 1)
+                self.commands["go"] = go
+                back = Command("back", " : revenir en arrière", Actions.back, 0)
+                self.commands["back"] = back
+                look = Command("look", " : regarder les items présents dans la pièce", Actions.look, 0)
+                self.commands["look"] = look
+                take = Command("take", " <item> : prendre un des items présents dans la pièce", Actions.take, 1)
+                self.commands["take"] = take
+                drop = Command("drop", " : <item> enlever un des items que l'on possède", Actions.drop, 1)
+                self.commands["drop"] = drop
+                check = Command("check", " : regarder les items que l'on possède", Actions.check, 0)
+                self.commands["check"] = check
+                talk = Command("talk", " <someone> : parler à un pnj", Actions.talk, 1)
+                self.commands["talk"] = talk
 
-        # Setup rooms
+                # Setup rooms
+                i = 1
+                while l[5][i] != '\0' : 
+                    l[5][i] = Room(l[5][i], l[6][i])
+                    self.rooms.append(l[5][i])
+                    i += 1
 
-        grassalone = Room("GrassAlone", "devant une étendue de brins d'herbe qui font votre taille.")
-        self.rooms.append(grassalone)
-        den = Room("Den", "tombé dans un terrier sombre sous le sol. Devant vous se dresse un lapin aux poils gris et aux yeux éclarlates.")
-        self.rooms.append(den)
-        forest = Room("Forest", "dans une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
-        self.rooms.append(forest)
-        tower = Room("Tower", "dans une immense tour en pierre qui s'élève au dessus des nuages.")
-        self.rooms.append(tower)
-        cave = Room("Cave", "dans une grotte profonde et sombre. Des voix semblent provenir des profondeurs.")
-        self.rooms.append(cave)
-        cottage = Room("Cottage", "dans un petit chalet pittoresque avec un toit de chaume. Une épaisse fumée verte sort de la cheminée.")
-        self.rooms.append(cottage)
-        swamp = Room("Swamp", "dans un marécage sombre et ténébreux. L'eau bouillonne, les abords sont vaseux.")
-        self.rooms.append(swamp)
-        castle = Room("Castle", "dans un énorme château fort avec des douves et un pont levis. Sur les tours, des flèches en or massif.")
-        self.rooms.append(castle)
+                # Create exits for rooms
 
-        # Create exits for rooms
+                while l[5][i] != '\0' : #dans la liste normalement mtn c des obj pas des noms
+                    l[5][i].exits = {"N" : l[6][i], "E" : l[7][i], "S" : l[8][i], "O" : l[9][i], "U" : l[10][i], "D" : l[10][i]}
+                    i += 1
+                    
+                #Creation items
+                grassalone.inventory_caracter = InventoryCaracter('Room')
+                grassalone.inventory_caracter.inventory_dict = {'brindille' : Item("brindille", "un baton de bois à votre echelle", 0.2)} 
+                den.inventory_caracter = InventoryCaracter('Room')
+                den.inventory_caracter.caracter_dict = {'harry' : Caracter("harry", "un lapin ferroce", den, ["tu es à croquer", "j t'aime bien (mm si je pref les carottes)"])}
+                forest.inventory_caracter = InventoryCaracter('Room')
+                tower.inventory_caracter = InventoryCaracter('Room')
+                cave.inventory_caracter = InventoryCaracter('Room')
+                cottage.inventory_caracter = InventoryCaracter('Room')
+                swamp.inventory_caracter = InventoryCaracter('Room')
+                castle.inventory_caracter = InventoryCaracter('Room')
 
-        grassalone.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : den}
-        den.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : None}
-        forest.exits = {"N" : cave, "E" : None, "S" : castle, "O" : None}
-        tower.exits = {"N" : cottage, "E" : None, "S" : None, "O" : None}
-        cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None}
-        cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
-        swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}
-        castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}
+                #Création/Setup des directions connues PAS SURE IL A DIT DEUX LIGNES 
+                self.knowndirections = set(self.rooms[0].exits.keys())
 
-        #Creation items
-        grassalone.inventory_caracter = InventoryCaracter('Room')
-        grassalone.inventory_caracter.inventory_dict = {'brindille' : Item("brindille", "un baton de bois à votre echelle", 0.2)} 
-        den.inventory_caracter = InventoryCaracter('Room')
-        den.inventory_caracter.caracter_dict = {'harry' : Caracter("harry", "un lapin ferroce", den, ["tu es à croquer", "j t'aime bien (mm si je pref les carottes)"])}
-        forest.inventory_caracter = InventoryCaracter('Room')
-        tower.inventory_caracter = InventoryCaracter('Room')
-        cave.inventory_caracter = InventoryCaracter('Room')
-        cottage.inventory_caracter = InventoryCaracter('Room')
-        swamp.inventory_caracter = InventoryCaracter('Room')
-        castle.inventory_caracter = InventoryCaracter('Room')
+                # Setup player and starting room (et l'historique)
 
-        #Création/Setup des directions connues PAS SURE IL A DIT DEUX LIGNES 
-        self.knowndirections = set(self.rooms[0].exits.keys())
+                self.player.current_room = grassalone
+                self.player.history.append(grassalone)
+                self.player.inventory_caracter = InventoryCaracter('Player')
+                self.text = self.player.current_room.get_long_description()
+            
+            else :
 
-        # Setup player and starting room (et l'historique)
+                # Setup commands
 
-        self.player.current_room = grassalone
-        self.player.history.append(grassalone)
-        self.player.inventory_caracter = InventoryCaracter('Player')
-        self.text = self.player.current_room.get_long_description()
+                help = Command("help", " : afficher cette aide", Actions.help, 0)
+                self.commands["help"] = help
+                quit = Command("quit", " : quitter le jeu", Actions.quit, 0)
+                self.commands["quit"] = quit
+                go = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O)", Actions.go, 1)
+                self.commands["go"] = go
+                back = Command("back", " : revenir en arrière", Actions.back, 0)
+                self.commands["back"] = back
+                look = Command("look", " : regarder les items présents dans la pièce", Actions.look, 0)
+                self.commands["look"] = look
+                take = Command("take", " <item> : prendre un des items présents dans la pièce", Actions.take, 1)
+                self.commands["take"] = take
+                drop = Command("drop", " : <item> enlever un des items que l'on possède", Actions.drop, 1)
+                self.commands["drop"] = drop
+                check = Command("check", " : regarder les items que l'on possède", Actions.check, 0)
+                self.commands["check"] = check
+                talk = Command("talk", " <someone> : parler à un pnj", Actions.talk, 1)
+                self.commands["talk"] = talk
+
+                # Setup rooms
+
+                grassalone = Room("GrassAlone", "devant une étendue de brins d'herbe qui font votre taille.")
+                self.rooms.append(grassalone)
+                den = Room("Den", "tombé dans un terrier sombre sous le sol. Devant vous se dresse un lapin aux poils gris et aux yeux éclarlates.")
+                self.rooms.append(den)
+                forest = Room("Forest", "dans une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
+                self.rooms.append(forest)
+                tower = Room("Tower", "dans une immense tour en pierre qui s'élève au dessus des nuages.")
+                self.rooms.append(tower)
+                cave = Room("Cave", "dans une grotte profonde et sombre. Des voix semblent provenir des profondeurs.")
+                self.rooms.append(cave)
+                cottage = Room("Cottage", "dans un petit chalet pittoresque avec un toit de chaume. Une épaisse fumée verte sort de la cheminée.")
+                self.rooms.append(cottage)
+                swamp = Room("Swamp", "dans un marécage sombre et ténébreux. L'eau bouillonne, les abords sont vaseux.")
+                self.rooms.append(swamp)
+                castle = Room("Castle", "dans un énorme château fort avec des douves et un pont levis. Sur les tours, des flèches en or massif.")
+                self.rooms.append(castle)
+
+                # Create exits for rooms
+
+                grassalone.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : den}
+                den.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : None}
+                forest.exits = {"N" : cave, "E" : None, "S" : castle, "O" : None}
+                tower.exits = {"N" : cottage, "E" : None, "S" : None, "O" : None}
+                cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None}
+                cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
+                swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}
+                castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}
+
+                #Creation items
+                grassalone.inventory_caracter = InventoryCaracter('Room')
+                grassalone.inventory_caracter.inventory_dict = {'brindille' : Item("brindille", "un baton de bois à votre echelle", 0.2)} 
+                den.inventory_caracter = InventoryCaracter('Room')
+                den.inventory_caracter.caracter_dict = {'harry' : Caracter("harry", "un lapin ferroce", den, ["tu es à croquer", "j t'aime bien (mm si je pref les carottes)"])}
+                forest.inventory_caracter = InventoryCaracter('Room')
+                tower.inventory_caracter = InventoryCaracter('Room')
+                cave.inventory_caracter = InventoryCaracter('Room')
+                cottage.inventory_caracter = InventoryCaracter('Room')
+                swamp.inventory_caracter = InventoryCaracter('Room')
+                castle.inventory_caracter = InventoryCaracter('Room')
+
+                #Création/Setup des directions connues PAS SURE IL A DIT DEUX LIGNES 
+                self.knowndirections = set(self.rooms[0].exits.keys())
+
+                # Setup player and starting room (et l'historique)
+
+                self.player.current_room = grassalone
+                self.player.history.append(grassalone)
+                self.player.inventory_caracter = InventoryCaracter('Player')
+                self.text = self.player.current_room.get_long_description()
 
     def get_current_text(self):
         """Retourne la question actuelle"""
