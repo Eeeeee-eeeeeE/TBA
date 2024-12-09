@@ -28,6 +28,8 @@ class Game:
         self.commands["quit"] = quit
         go = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O) ou horizontale (D, U)", Actions.go, 1)
         self.commands["go"] = go
+        back = Command("back", " : retour à la pièce précédente", Actions.back, 0)
+        self.commands["back"] = back
         
         # Setup rooms
 

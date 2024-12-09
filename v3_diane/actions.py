@@ -15,8 +15,10 @@
 MSG0 = "\nLa commande '{command_word}' ne prend pas de paramètre.\n"
 # The MSG1 variable is used when the command takes 1 parameter.
 MSG1 = "\nLa commande '{command_word}' prend 1 seul paramètre.\n"
-# The MSG2 variable is used when the command is used with an invalid direction.
+# The MSG2 variable is used when the command go is used with an invalid direction.
 MSG2 = "\nLa direction '{direction}' non reconnue."
+# The MSG3 variable is used when the command back is used with an empty history.
+MSG3 = "\nL'historique est vide."
 
 class Actions:
 
@@ -159,3 +161,13 @@ class Actions:
             print("\t- " + str(command))
         print()
         return True
+    
+    def back(game, list_of_words, number_of_parameters):
+        if(len(game.player.history) > 0):
+            game.player.current_room= game.player.history.pop()
+            print(game.player.current_room.get_long_description())
+            if(len(game.player.history) > 0):
+                print(game.player.get_history())
+        else :
+            print(MSG3)
+            print(game.player.current_room.get_long_description())
