@@ -19,6 +19,8 @@ MSG1 = "\nLa commande '{command_word}' prend 1 seul paramètre.\n"
 MSG2 = "\nLa direction '{direction}' non reconnue."
 # The MSG3 variable is used when the command back is used with an empty history.
 MSG3 = "\nL'historique est vide."
+# The MSG4 variable is used when the command take is used with a wrong object.
+MSG4 = "\nL'objet '{item}' n'est pas dans {inventaire_ou_pièce}.\n"
 
 class Actions:
 
@@ -212,4 +214,92 @@ class Actions:
             return False
         
         print(game.player.current_room.get_inventory())
+        return True
+
+    def take(game, list_of_words, number_of_parameters):
+        """
+        Take an item present in the room and put it in the player's inventory.
+        
+        Args:
+            game (Game): The game object.
+            list_of_words (list): The list of words in the command.
+            number_of_parameters (int): The number of parameters expected by the command.
+
+        Returns:
+            bool: True if the command was executed successfully, False otherwise.
+        """
+        # If the number of parameters is incorrect, print an error message and return False.
+        l = len(list_of_words)
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+        
+        # Get the object from the list of words.
+        object = list_of_words[1]
+
+        #If the object is not in the room, print an error message and return False..
+        if object not in game.player.current_room.inventory :
+            print(MSG4.format(item=object, inventaire_ou_pièce='la pièce'))
+            return False
+        
+        # If possible, put the object in the inventory.
+        game.player.inventory[object] = print(object)
+        game.player.current_room.inventory.remove(object)
+        print("\nVous avez pris l'object '{0}'.\n".format(object))
+        return True
+
+    def drop(game, list_of_words, number_of_parameters):
+        """
+        Drop an item present in the player's inventory and put it in the current room.
+        
+        Args:
+            game (Game): The game object.
+            list_of_words (list): The list of words in the command.
+            number_of_parameters (int): The number of parameters expected by the command.
+
+        Returns:
+            bool: True if the command was executed successfully, False otherwise.
+        """
+        # If the number of parameters is incorrect, print an error message and return False.
+        l = len(list_of_words)
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+        
+        # Get the object from the list of words.
+        object = list_of_words[1]
+
+        #If the object is not in the player's inventory, print an error message and return False.
+        if object not in game.player.inventory :
+            print(MSG4.format(item=object, inventaire_ou_pièce="l'inventaire"))
+            return False
+        
+        # If possible, droop the object in the room.
+        game.player.current_room.inventory.add(object)
+        del game.player.inventory[object]
+        print("\nVous avez déposé l'object '{0}'.\n".format(object))
+        return True
+
+    def check(game, list_of_words, number_of_parameters):
+        """
+        See what is in the player's inventory.
+
+        Args:
+            game (Game): The game object.
+            list_of_words (list): The list of words in the command.
+            number_of_parameters (int): The number of parameters expected by the command.
+
+        Returns:
+            bool: True if the command was executed successfully, False otherwise.
+        """
+        # If the number of parameters is incorrect, print an error message and return False.
+        l = len(list_of_words)
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+        
+        print(game.player.get_inventory())
         return True

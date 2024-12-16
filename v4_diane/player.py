@@ -36,9 +36,9 @@ class Player():
     
     def get_inventory(self):
         if self.inventory == {} :
-            return f"Votre inventaire est vide."
+            return f"\nVotre inventaire est vide.\n"
         else :
             l_item = ''
             for i in self.inventory :
                 l_item = l_item + '- ' + print(i) + '\n'
-            return f"Vous disposez des items suivants :\n{l_item}"
+            return f"\nVous disposez des items suivants :\n{l_item}"

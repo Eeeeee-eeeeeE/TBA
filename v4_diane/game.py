@@ -32,6 +32,12 @@ class Game:
         self.commands["back"] = back
         look = Command("look", " : affiche la liste des items dans la pièce", Actions.look, 0)
         self.commands["look"] = look
+        take = Command("take", " : mettre un item de la pièce dans son inventaire", Actions.take, 1)
+        self.commands["take"] = take
+        drop = Command("drop", " : déposer un item de son inventaire dans la pièce", Actions.drop, 1)
+        self.commands["drop"] = drop
+        check = Command("check", " : regarder ce qu'il y a dans son inventaire", Actions.check, 0)
+        self.commands["check"] = check
         
         # Setup rooms
 
