@@ -1,3 +1,4 @@
+# Define the Item class.
 class Item:
     """
     This class represents an item. An item is composed of a name, a description and its weight.

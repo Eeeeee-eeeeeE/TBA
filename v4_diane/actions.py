@@ -244,8 +244,8 @@ class Actions:
             return False
         
         # If possible, put the object in the inventory.
-        game.player.inventory[object] = print(object)
-        game.player.current_room.inventory.remove(object)
+        game.player.inventory[object] = game.player.current_room.inventory.get(object)
+        del game.player.current_room.inventory[object]
         print("\nVous avez pris l'object '{0}'.\n".format(object))
         return True
 
@@ -277,7 +277,7 @@ class Actions:
             return False
         
         # If possible, droop the object in the room.
-        game.player.current_room.inventory.add(object)
+        game.player.current_room.inventory[object] = game.player.inventory.get(object)
         del game.player.inventory[object]
         print("\nVous avez déposé l'object '{0}'.\n".format(object))
         return True

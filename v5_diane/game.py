@@ -6,6 +6,8 @@ from room import Room
 from player import Player
 from command import Command
 from actions import Actions
+from character import Character
+from item import Item
 
 class Game:
 
@@ -79,6 +81,12 @@ class Game:
 
         self.player = Player(input("\nEntrez votre nom: "))
         self.player.current_room = wardrobeE
+
+        #Setup items of the rooms
+        
+        #Setup pnj in the rooms
+        gandalf = Character("Gandalf", "un magicien blanc", wardrobeO, ["Abracadabra !"])
+        wardrobeO.characters("gandalf" : gandalf)
 
     # Play the game
     def play(self):

@@ -34,7 +34,7 @@ class Room:
         self.name = name
         self.description = description
         self.exits = {}
-        self.inventory = set()
+        self.inventory = dict()
     
     # Define the get_exit method.
     def get_exit(self, direction):
@@ -59,10 +59,10 @@ class Room:
         return f"\nVous êtes dans {self.description}\n\n{self.get_exit_string()}\n"
 
     def get_inventory(self):
-        if self.inventory == set() :
-            return f"Il n'y a rien ici.\n"
+        if self.inventory == dict() :
+            return f"\nIl n'y a rien ici.\n"
         else :
             l_item = ''
-            for i in self.inventory :
-                l_item = l_item + '- ' + print(i) + '\n'
-            return f"On voit :\n{l_item}"
+            for i in self.inventory.values() :
+                l_item = l_item + '- ' + "{0} : {1} ({2} kg)".format(i.name, i.description, i.weight) + '\n'
+            return f"\nOn voit :\n{l_item}"
