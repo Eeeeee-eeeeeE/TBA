@@ -96,7 +96,7 @@ class Game:
         self.player = Player(input("\nEntrez votre nom: "))
         self.player.current_room = grassalone
         self.player.history.append(grassalone)
-        self.player.inventory = InventoryCaracter('Player')
+        self.player.inventory_caracter = InventoryCaracter('Player')
 
     # Play the game
     def play(self):
