@@ -68,34 +68,80 @@ class GameLogic():
                 # Create exits for rooms
 
                 while l[5][i] != '\0' : #dans la liste normalement mtn c des obj pas des noms
-                    l[5][i].exits = {"N" : l[6][i], "E" : l[7][i], "S" : l[8][i], "O" : l[9][i], "U" : l[10][i], "D" : l[10][i]}
+                    l[5][i].exits = {"N" : l[6][i], "E" : l[7][i], "S" : l[8][i], "O" : l[9][i], "U" : l[10][i], "D" : l[11][i]}
                     i += 1
                     
                 #Creation items
                 i=0
                 while l[5][i] != '\0': 
                     l[5][i].inventory_caracter = InventoryCaracter('Room')
-                                        j = 0
-                                        mots = ''
-                                        paroles = []
-                                        while l[20][i][j] != '\0' : #les paroles sont dans la case comme tel "balabal la \ blabla2"
-                                            mots = mots + l[20][i][j]
-                                            if l[20][i][j] == '\' :
-                                                paroles.append(mots)
-                                                mots = ''
-                                            j += 1 
-                                            l[5][i].inventory_caracter.inventory_dict = {l[14][i] : Item(l[14][i], l[15][i], float(l[16][i])}
                     j = 0
                     mots = ''
-                    paroles = []
+                    inventairename = []
+                    while l[20][i][j] != '\0' : #les paroles sont dans la case comme tel "inventory1 \inventory2"
+                        mots = mots + l[20][i][j]
+                        if l[20][i][j] == '\' :
+                            inventairename.append(mots)
+                            mots = ''
+                            j += 1
+                    j = 0
+                    mots = ''
+                    inventairedescrib = []
+                    while l[20][i][j] != '\0' : #les paroles sont dans la case comme tel "inventory1 \inventory2"
+                        mots = mots + l[20][i][j]
+                        if l[20][i][j] == '\' :
+                            inventairedescrib.append(mots)
+                            mots = ''
+                            j += 1 
+                    j = 0
+                    mots = ''
+                    inventairepoid = []
+                    while l[20][i][j] != '\0' : #les paroles sont dans la case comme tel "inventory1 \inventory2"
+                        mots = mots + l[20][i][j]
+                        if l[20][i][j] == '\' :
+                            inventairepoid.append(mots)
+                            mots = ''
+                            j += 1  
+                    for j in range(0, len(inventairename)) :
+                        l[5][i].inventory_caracter.inventory_dict = {inventairename[j] : Item(inventairename[j], inventairedescrib[j], float(inventairepoid[j])}
+                    j = 0
+                    mots = ''
+                    charactersname = []
                     while l[20][i][j] != '\0' : #les paroles sont dans la case comme tel "balabal la \ blabla2"
                         mots = mots + l[20][i][j]
                         if l[20][i][j] == '\' :
-                            paroles.append(mots)
+                            charactersname.append(mots)
                             mots = ''
                         j += 1 
-                    for i in range (0, int(l[17][i])):
-                        l[5][i].inventory_caracter.caracter_dict = {l[18][i] : Item(l[18][i], l[19][i], l[5][i], paroles}
+                    j = 0
+                    mots = ''
+                    charactersdescrip = []
+                    while l[20][i][j] != '\0' : #les paroles sont dans la case comme tel "balabal la \ blabla2"
+                        mots = mots + l[20][i][j]
+                        if l[20][i][j] == '\' :
+                            charactersdescrip.append(mots)
+                            mots = ''
+                        j += 1 
+                    j = 0
+                    mots = ''
+                    lstparoles = []
+                    while l[20][i][j] != '\0' : #les paroles sont dans la case comme tel "balabal la \ blabla2"
+                        mots = mots + l[20][i][j]
+                        if l[20][i][j] == '\' :
+                            lstparoles.append(mots)
+                            mots = ''
+                        j += 1 
+                    for j in range (0, len(charactersname)):
+                        k = 0
+                        mots = ''
+                        paroles = []
+                        while lstparoles[j][k] != '\0' : #les paroles sont dans la case comme tel "balabal la \ blabla2"
+                            mots = mots + lstparoles[j][k]
+                            if lstparoles[j][k] == '/' :
+                                paroles.append(mots)
+                                mots = ''
+                            k += 1 
+                        l[5][i].inventory_caracter.caracter_dict = {charactersname[j]: Item(charactersname[j], charactersdescrip, l[5][i], paroles}
                     i += 1
 
                 #Création/Setup des directions connues PAS SURE IL A DIT DEUX LIGNES 
@@ -103,9 +149,10 @@ class GameLogic():
 
                 # Setup player and starting room (et l'historique)
 
-                self.player.current_room = l[21][0]
-                self.player.history.append(grassalone)
+                self.player.current_room = l[1][0]
+                self.player.history.append(self.player.current_room)
                 self.player.inventory_caracter = InventoryCaracter('Player')
+                #a faire pareil que l'auitre inventory 
                 self.text = self.player.current_room.get_long_description()
             
             else :
