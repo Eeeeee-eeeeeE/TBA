@@ -27,7 +27,7 @@ class GameLogic():
         self.warning = ""
         self.nb = 0 #nb intructions
 
-        self.donnees = "donnees.csv" #[game.player.name, game.player.current_room, gameplayer.history, game.player.inventory_carcater, game.knowndirection, game.rooms.numeroi.name, game.room.numeoi.description, game.room.niumeroi.exitsN,game.room.niumeroi.exitsS, game.room.niumeroi.exitsE, game.room.niumeroi.exitsO, game.room.niumeroi.exitsU, game.room.niumeroi.exitsD, game.room.niumeroi.inventory_caractere, game.inventory_caract.type, game.inventory_carct.caracter_dict, game.inventory_caract.inventory_dict]
+    self.donnees = "donnees.csv" #[game.player.name, game.player.current_room, gameplayer.history, game.player.inventory_carcater, game.knowndirection, game.rooms.numeroi.name, game.room.numeoi.description, game.room.niumeroi.exitsN,game.room.niumeroi.exitsS, game.room.niumeroi.exitsE, game.room.niumeroi.exitsO, game.room.niumeroi.exitsU, game.room.niumeroi.exitsD, game.room.niumeroi.nbinventory, game.room.ni.nameitem, game.room.ni.descriptionitem, game.room.ni.poiditem]
                             
     # Setup the game
     def setup(self):
@@ -35,7 +35,7 @@ class GameLogic():
         with open(self.donnees, mode='r', encoding='utf8') as f:
             r = csv.reader(f)
             l = list(r)
-            if (len(l))==0):
+            if (len(l)==0):
 
                 # Setup commands
 
@@ -72,16 +72,23 @@ class GameLogic():
                     i += 1
                     
                 #Creation items
-                grassalone.inventory_caracter = InventoryCaracter('Room')
-                grassalone.inventory_caracter.inventory_dict = {'brindille' : Item("brindille", "un baton de bois à votre echelle", 0.2)} 
-                den.inventory_caracter = InventoryCaracter('Room')
-                den.inventory_caracter.caracter_dict = {'harry' : Caracter("harry", "un lapin ferroce", den, ["tu es à croquer", "j t'aime bien (mm si je pref les carottes)"])}
-                forest.inventory_caracter = InventoryCaracter('Room')
-                tower.inventory_caracter = InventoryCaracter('Room')
-                cave.inventory_caracter = InventoryCaracter('Room')
-                cottage.inventory_caracter = InventoryCaracter('Room')
-                swamp.inventory_caracter = InventoryCaracter('Room')
-                castle.inventory_caracter = InventoryCaracter('Room')
+                i=0
+                while l[5][i] != '\0': 
+                    l[5][i].inventory_caracter = InventoryCaracter('Room')
+                    for i in range (0, int(l[13][i])):
+                        l[5][i].inventory_caracter.inventory_dict = {l[14][i] : Item(l[14][i], l[15][i], float(l[16][i])}
+                    j = 0
+                    mots = ''
+                    paroles = []
+                    while l[20][i][j] != '\0' : #les paroles sont dans la case comme tel "balabal la \ blabla2"
+                        mots = mots + l[20][i][j]
+                        if l[20][i][j] == '\' :
+                            paroles.append(mots)
+                            mots = ''
+                        j += 1 
+                    for i in range (0, int(l[17][i])):
+                        l[5][i].inventory_caracter.caracter_dict = {l[18][i] : Item(l[18][i], l[19][i], l[5][i], paroles}
+                    i += 1
 
                 #Création/Setup des directions connues PAS SURE IL A DIT DEUX LIGNES 
                 self.knowndirections = set(self.rooms[0].exits.keys())
