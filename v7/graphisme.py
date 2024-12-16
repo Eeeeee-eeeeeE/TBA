@@ -27,7 +27,7 @@ class GameLogic():
         self.warning = ""
         self.nb = 0 #nb intructions
 
-    self.donnees = "donnees.csv" #[game.player.name, game.player.current_room, gameplayer.history, game.player.inventory_carcater, game.knowndirection, game.rooms.numeroi.name, game.room.numeoi.description, game.room.niumeroi.exitsN,game.room.niumeroi.exitsS, game.room.niumeroi.exitsE, game.room.niumeroi.exitsO, game.room.niumeroi.exitsU, game.room.niumeroi.exitsD, game.room.niumeroi.nbinventory, game.room.ni.nameitem, game.room.ni.descriptionitem, game.room.ni.poiditem]
+    self.donnees = "donnees.csv" #[game.player.name, game.player.current_room, gameplayer.history, game.player.inventory_carcater, game.knowndirection, game.rooms.numeroi.name, game.room.numeoi.description, game.room.niumeroi.exitsN,game.room.niumeroi.exitsS, game.room.niumeroi.exitsE, game.room.niumeroi.exitsO, game.room.niumeroi.exitsU, game.room.niumeroi.exitsD, game.room.ni.nameitem, game.room.ni.descriptionitem, game.room.ni.poiditem, game.room.ni.manecharact, game.room.ni.descriptinocaract, game.room.ni.roomcharact, game.room.ni.paroles ]
                             
     # Setup the game
     def setup(self):
@@ -75,8 +75,16 @@ class GameLogic():
                 i=0
                 while l[5][i] != '\0': 
                     l[5][i].inventory_caracter = InventoryCaracter('Room')
-                    for i in range (0, int(l[13][i])):
-                        l[5][i].inventory_caracter.inventory_dict = {l[14][i] : Item(l[14][i], l[15][i], float(l[16][i])}
+                                        j = 0
+                                        mots = ''
+                                        paroles = []
+                                        while l[20][i][j] != '\0' : #les paroles sont dans la case comme tel "balabal la \ blabla2"
+                                            mots = mots + l[20][i][j]
+                                            if l[20][i][j] == '\' :
+                                                paroles.append(mots)
+                                                mots = ''
+                                            j += 1 
+                                            l[5][i].inventory_caracter.inventory_dict = {l[14][i] : Item(l[14][i], l[15][i], float(l[16][i])}
                     j = 0
                     mots = ''
                     paroles = []
@@ -95,7 +103,7 @@ class GameLogic():
 
                 # Setup player and starting room (et l'historique)
 
-                self.player.current_room = grassalone
+                self.player.current_room = l[21][0]
                 self.player.history.append(grassalone)
                 self.player.inventory_caracter = InventoryCaracter('Player')
                 self.text = self.player.current_room.get_long_description()
