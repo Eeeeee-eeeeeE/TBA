@@ -74,7 +74,8 @@ class Game:
         #Creation items
         grassalone.inventory = Inventory('Room')
         grassalone.inventory.dict = {'brindille' : Item("brindille", "un baton de bois à votre echelle", 0.2)} 
-
+        den.inventory = Inventory('Room')
+        
         #Création/Setup des directions connues PAS SURE IL A DIT DEUX LIGNES 
         self.knowndirections = set(self.rooms[0].exits.keys())
 
