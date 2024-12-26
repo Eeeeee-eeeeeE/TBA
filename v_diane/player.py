@@ -24,6 +24,7 @@ class Player():
         Beings.__init__(self, name, current_room)
         self.history = []
         self.inventory = dict()
+        self.inventory_weight_max = 40 
     
     # Define the move method.
     def move(self, direction):

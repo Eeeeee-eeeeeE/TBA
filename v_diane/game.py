@@ -78,11 +78,11 @@ class Game:
         tree.exits = {"N" : None, "E" : None, "S" : None, "O" : tree, "U" : None, "D" : None}
 
         #Setup items of the rooms
-        truc = Item("truc", "un truc étrange", 3)
+        truc = Item("truc", "un truc étrange", 50)
         wardrobeO.inventory["truc"] = truc
 
         #Setup characters of the rooms
-        mister = Character("mister", "un mister étrange", wardrobeE, ["hola"])
+        mister = Character("mister", "un mister étrange", wardrobeE, ["hola"], [wardrobeE, wardrobeO])
         wardrobeE.characters["mister"] = mister
         
         #Set of all the possible directions

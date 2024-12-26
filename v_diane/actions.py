@@ -21,6 +21,8 @@ MSG2 = "\nLa direction '{direction}' non reconnue."
 MSG3 = "\nL'historique est vide."
 # The MSG4 variable is used when the command take is used with a wrong object.
 MSG4 = "\nLe '{item}' n'est pas dans {inventaire_ou_pièce}.\n"
+# The MSG5 variable is used when the command take is used with an object that is too heavy.
+MSG5 = "\nLe '{item}' est trop lourd pour rentrer dans votre inventaire.\n"
 
 from inventory import Inventory
 
@@ -86,6 +88,13 @@ class Actions:
             command_word = list_of_words[0]
             print(MSG2.format(direction=direction))
             print(game.player.current_room.get_long_description())
+
+        #Moves the pnjs
+        for knownroom in game.rooms:
+            characters_before = list(knownroom.characters.values())
+            for character in characters_before:
+                character.move()
+
         return True
 
     def quit(game, list_of_words, number_of_parameters):
@@ -245,8 +254,21 @@ class Actions:
         if object not in game.player.current_room.inventory :
             print(MSG4.format(item=object, inventaire_ou_pièce='la pièce'))
             return False
-        
-        # If possible, put the object in the inventory.
+
+        #If the maximum weight is reached, print an error message and return False.
+
+        #Calculates the weight of is currently in inventory
+        total_weight = 0
+        for i in game.player.inventory.values() :
+            total_weight = total_weight + i.weight
+        if total_weight + game.player.current_room.inventory.get(object).weight > game.player.inventory_weight_max :
+            print(MSG5.format(item=object))
+            print("Le poids total de ce que vous portez est de {total_weight} kg.".format(total_weight=total_weight), end=" ")
+            print("Le maximum de ce que vous pouvez porter est de {max_weight} kg.".format(max_weight=game.player.inventory_weight_max), end=" ")
+            print("Si vous voulez prendre cet item il faut que vous vous deparassiez de {to_drop} kg au moins.".format(to_drop=game.player.current_room.inventory.get(object).weight -(game.player.inventory_weight_max - total_weight)), end="\n")
+            return False
+
+        #Put the object in the inventory.
         game.player.inventory[object] = game.player.current_room.inventory.get(object)
         del game.player.current_room.inventory[object]
         print("\nVous avez pris l'object '{0}'.\n".format(object))
@@ -279,7 +301,7 @@ class Actions:
             print(MSG4.format(item=object, inventaire_ou_pièce="l'inventaire"))
             return False
         
-        # If possible, droop the object in the room.
+        #Droop the object in the room.
         game.player.current_room.inventory[object] = game.player.inventory.get(object)
         del game.player.inventory[object]
         print("\nVous avez déposé l'object '{0}'.\n".format(object))
@@ -327,6 +349,6 @@ class Actions:
             #print(player.current_room.get_long_description())
             return False
         
-        # If possible, print a message of the character.
-        player.current_room.characters[pnj].get_msg()
+        #Print a message of the character.
+        player.current_room.characters[pnj].get_msg(game)
         return True
