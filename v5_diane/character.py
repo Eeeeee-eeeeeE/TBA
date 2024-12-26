@@ -24,3 +24,29 @@ class Character:
 
     def __str__(self):
         return  "{0} : {1}".format(self.name, self.description)
+    
+    # Define the move method.
+    def move(self): 
+        """
+        Characters have one chance out of two to go to an adjacent room or not. 
+        """
+        rooms = []
+        for room in self.current_room.exits.values():
+            if room is not None:
+                rooms.append(room)
+
+        half = [0, 1]
+        if random.choice(half) and rooms != []:
+            room = random.choice(rooms)
+            del self.current_room.characters[self.name]
+            self.current_room = room
+            self.current_room.characters[self.name] = self
+            return True
+        return False
+
+    def get_msg(self):
+        msg = self.msgs.pop(0)
+        print("\n" + msg + "\n")
+        self.msgs.append(msg) 
+
+    

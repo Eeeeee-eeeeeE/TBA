@@ -6,8 +6,8 @@ from room import Room
 from player import Player
 from command import Command
 from actions import Actions
-from character import Character
 from item import Item
+from character import Character
 
 class Game:
 
@@ -45,7 +45,7 @@ class Game:
 
         wardrobeO = Room("WardrobeO", "la partie de gauche d'une grande salle lugubre sans fenêtre.")
         self.rooms.append(wardrobeO)
-        wardrobeE = Room("WardrobeE", "a partie de droite d'une grande salle lugubre sans fenêtre.")
+        wardrobeE = Room("WardrobeE", "la partie de droite d'une grande salle lugubre sans fenêtre.")
         self.rooms.append(wardrobeE)
         enigma = Room("Enigma", "une salle modeste. Devant vous se tient un petit monsieur à l'air malicieux.")
         self.rooms.append(enigma)
@@ -74,6 +74,14 @@ class Game:
         out.exits = {"N" : None, "E" : tree, "S" : None, "O" : musty, "U" : glitter, "D" : None}
         tree.exits = {"N" : None, "E" : None, "S" : None, "O" : tree, "U" : None, "D" : None}
 
+        #Setup items of the rooms
+        truc = Item("truc", "un truc étrange", 3)
+        wardrobeO.inventory["truc"] = truc
+
+        #Setup characters of the rooms
+        mister = Character("mister", "un mister étrange", wardrobeE, ["hola"])
+        wardrobeE.characters["mister"] = mister
+        
         #Set of all the possible directions
         self.possible_direction = {k for r in self.rooms for k in r.exits.keys() }
         
@@ -82,11 +90,6 @@ class Game:
         self.player = Player(input("\nEntrez votre nom: "))
         self.player.current_room = wardrobeE
 
-        #Setup items of the rooms
-        
-        #Setup pnj in the rooms
-        gandalf = Character("Gandalf", "un magicien blanc", wardrobeO, ["Abracadabra !"])
-        wardrobeO.characters("gandalf" : gandalf)
 
     # Play the game
     def play(self):

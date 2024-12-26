@@ -1,4 +1,3 @@
-# Define the Item class.
 class Item:
     """
     This class represents an item. An item is composed of a name, a description and its weight.
@@ -22,6 +21,6 @@ class Item:
     
     # The string representation of the item.
     def __str__(self):
-        return  "{0} : {1} ({2} kg)".format(self.name, self.description, self.weight)
+        return "{0} : {1} ({2} kg)".format(self.name, self.description, self.weight)
 
     
