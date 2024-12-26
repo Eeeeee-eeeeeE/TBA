@@ -121,14 +121,14 @@ class GameApp(tk.Tk, GameLogic):
         GameLogic.__init__(self)
         self.title("Jeu d'Aventure")
         self.geometry("800x600")
-        self.backgroung = PhotoImage("test.png")
+        self.background = PhotoImage(file = "test.png")
         self.create_widgets()
 
     def create_widgets(self):
         """Créer les widgets de l'interface"""
         # Background
         self.image_label = tk.Label(self, image = self.background)
-        self.image_label.pack(x=0, y=0)
+        self.image_label.place(x=0, y=0, relwidth = 1, relheight = 1)
         
         # Zone de texte pour afficher le text
         self.text_label = tk.Label(self, text=self.get_current_text(), font=("Arial", 14), wraplength=350)
