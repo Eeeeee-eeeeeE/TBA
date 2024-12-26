@@ -48,6 +48,7 @@ class Character:
         return False
 
     def get_msg(self):
+        
         msg = self.msgs.pop(0)
         print("\n" + msg + "\n")
         self.msgs.append(msg) 

@@ -20,7 +20,7 @@ MSG2 = "\nLa direction '{direction}' non reconnue."
 # The MSG3 variable is used when the command back is used with an empty history.
 MSG3 = "\nL'historique est vide."
 # The MSG4 variable is used when the command take is used with a wrong object.
-MSG4 = "\nL'objet '{item}' n'est pas dans {inventaire_ou_pièce}.\n"
+MSG4 = "\nLe '{item}' n'est pas dans {inventaire_ou_pièce}.\n"
 
 from inventory import Inventory
 
@@ -320,13 +320,13 @@ class Actions:
         # Get the pnj from the list of words.
         pnj = list_of_words[1]
 
-        #
-        if pnj not in player.current_room.inventory_caracter.caracter_dict.keys() :
+        #If the pnj is not in the current room, print an error message and return False.
+        if pnj not in  game.player.current_room.characters  :
             command_word = list_of_words[0]
-            print(MSG2.format(command_word=command_word, entered_world=pnj), end='')
-            print(player.current_room.get_long_description())
+            print(MSG4.format(item=command_word, inventaire_ou_pièce="la pièce"))
+            #print(player.current_room.get_long_description())
             return False
-        #
-        player.current_room.inventory_caracter.caracter_dict[pnj].get_msg()
-
+        
+        # If possible, print a message of the character.
+        player.current_room.characters[pnj].get_msg()
         return True
