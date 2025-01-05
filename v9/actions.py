@@ -1,217 +1,309 @@
+# Description: The actions module.
 
-#!apt-get install -y xvfb  # Install X Virtual Frame Buffer
-#import os
-#os.system('Xvfb :1 -screen 0 1600x1200x16 &')  # Create virtual display
-#os.environ['DISPLAY'] = ':1.0'  # Set the DISPLAY variable
-"""
-"""
+# The actions module contains the functions that are called when a command is executed.
+# Each function takes 3 parameters:
+# - game: the game object
+# - list_of_words: the list of words in the command
+# - number_of_parameters: the number of parameters expected by the command
+# The functions return True if the command was executed successfully, False otherwise.
+# The functions print an error message if the number of parameters is incorrect.
+# The error message is different depending on the number of parameters expected by the command.
 
-from room import Room
-from player import Player
-from command import Command
-from actions import Actions
-from item import Item
-from inventory_caracter import InventoryCaracter
-from character import Caracter 
+# The error message is stored in the MSG0 and MSG1 variables and formatted with the command_word variable, the first word in the command.
+# The MSG0 variable is used when the command does not take any parameter.
+MSG0 = "\nLa commande '{command_word}' ne prend pas de paramètre.\n"
+# The MSG1 variable is used when the command takes 1 parameter.
+MSG1 = "\nLa commande '{command_word}' prend 1 seul paramètre.\n"
+#
+MSG2 = "\nLa commande '{command_word}' ne peut pas prendre '{entered_world}' en paramêtre.\n\n" #besoin deux \n POURQUOI
+#
+MSG3 = "\nLa commande '{command_word}' ne peut pas être utilisée dans cette situation.\n"
 
-import tkinter as tk
-from tkinter import messagebox, PhotoImage
+class Actions:
 
-DEBUG = True
+    def go(game, list_of_words, number_of_parameters):
+        """
+        Move the player in the direction specified by the parameter.
+        The parameter must be a cardinal direction (N, E, S, O).
 
-# Classe de base pour la logique du jeu
-class GameLogic():
+        Args:
+            game (Game): The game object.
+            list_of_words (list): The list of words in the command.
+            number_of_parameters (int): The number of parameters expected by the command.
 
-    def __init__(self):
-        self.finished = False
-        self.rooms = []
-        self.commands = {}
-        self.player = None
-        self.knowndirections = set() #ou attribut de clasee JE SAIS PAS???
+        Returns:
+            bool: True if the command was executed successfully, False otherwise.
 
-        self.text = ""
-        self.warning = ""
-        self.nb = 0 #nb intructions
-        self.images = dict([('begining', 'begining.png')])
-
-    # Setup the game
-    def setup(self):
-
-        # Setup commands
-
-        help = Command("help", " : afficher cette aide", Actions.help, 0)
-        self.commands["help"] = help
-        quit = Command("quit", " : quitter le jeu", Actions.quit, 0)
-        self.commands["quit"] = quit
-        go = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O)", Actions.go, 1)
-        self.commands["go"] = go
-        back = Command("back", " : revenir en arrière", Actions.back, 0)
-        self.commands["back"] = back
-        look = Command("look", " : regarder les items présents dans la pièce", Actions.look, 0)
-        self.commands["look"] = look
-        take = Command("take", " <item> : prendre un des items présents dans la pièce", Actions.take, 1)
-        self.commands["take"] = take
-        drop = Command("drop", " : <item> enlever un des items que l'on possède", Actions.drop, 1)
-        self.commands["drop"] = drop
-        check = Command("check", " : regarder les items que l'on possède", Actions.check, 0)
-        self.commands["check"] = check
-        talk = Command("talk", " <someone> : parler à un pnj", Actions.talk, 1)
-        self.commands["talk"] = talk
-
-        # Setup rooms
-
-        grassalone = Room("GrassAlone", "devant une étendue de brins d'herbe qui font votre taille.")
-        self.rooms.append(grassalone)
-        den = Room("Den", "tombé dans un terrier sombre sous le sol. Devant vous se dresse un lapin aux poils gris et aux yeux éclarlates.")
-        self.rooms.append(den)
-        forest = Room("Forest", "dans une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
-        self.rooms.append(forest)
-        tower = Room("Tower", "dans une immense tour en pierre qui s'élève au dessus des nuages.")
-        self.rooms.append(tower)
-        cave = Room("Cave", "dans une grotte profonde et sombre. Des voix semblent provenir des profondeurs.")
-        self.rooms.append(cave)
-        cottage = Room("Cottage", "dans un petit chalet pittoresque avec un toit de chaume. Une épaisse fumée verte sort de la cheminée.")
-        self.rooms.append(cottage)
-        swamp = Room("Swamp", "dans un marécage sombre et ténébreux. L'eau bouillonne, les abords sont vaseux.")
-        self.rooms.append(swamp)
-        castle = Room("Castle", "dans un énorme château fort avec des douves et un pont levis. Sur les tours, des flèches en or massif.")
-        self.rooms.append(castle)
-
-        # Create exits for rooms
-
-        grassalone.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : den}
-        den.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : None}
-        forest.exits = {"N" : cave, "E" : None, "S" : castle, "O" : None}
-        tower.exits = {"N" : cottage, "E" : None, "S" : None, "O" : None}
-        cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None}
-        cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
-        swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}
-        castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}
-
-        #Creation items
-        grassalone.inventory_caracter = InventoryCaracter('Room')
-        grassalone.inventory_caracter.inventory_dict = {'brindille' : Item("brindille", "un baton de bois à votre echelle", 0.2)} 
-        den.inventory_caracter = InventoryCaracter('Room')
-        den.inventory_caracter.caracter_dict = {'harry' : Caracter("harry", "un lapin ferroce", den, ["tu es à croquer", "j t'aime bien (mm si je pref les carottes)"])}
-        forest.inventory_caracter = InventoryCaracter('Room')
-        tower.inventory_caracter = InventoryCaracter('Room')
-        cave.inventory_caracter = InventoryCaracter('Room')
-        cottage.inventory_caracter = InventoryCaracter('Room')
-        swamp.inventory_caracter = InventoryCaracter('Room')
-        castle.inventory_caracter = InventoryCaracter('Room')
-
-        #Création/Setup des directions connues PAS SURE IL A DIT DEUX LIGNES 
-        self.knowndirections = set(self.rooms[0].exits.keys())
-
-        # Setup player and starting room (et l'historique)
-
-        self.player.current_room = grassalone
-        self.player.history.append(grassalone)
-        self.player.inventory_caracter = InventoryCaracter('Player')
-        self.text = self.player.current_room.get_long_description()
-        self.images.update(dict([("Den", "Den.png"), ("GrassAlone", "GrassAlone.png")]))
-
-    def get_current_text(self):
-        """Retourne la question actuelle"""
-        if self.nb == 0:
-            self.text = "\nEntrez votre nom: "
-        elif self.nb == 1:
-            self.text = f"\nBienvenue {self.player.name} dans ce jeu d'aventure !\nEntrez 'help' si vous avez besoin d'aide.\n"
-        return self.text #DANS LES FICHIERS QUAND PRINT REMPLACER PAR MODIF GAME.TEXT
-
-    def treat_command(self, command, list_of_words):
-        """Vérifie la réponse et met à jour le score"""
-        command.action(self, list_of_words, command.number_of_parameters)
-
-
-# Classe de l'interface graphique avec tkinter
-class GameApp(tk.Tk, GameLogic):
-    def __init__(self):
-        tk.Tk.__init__(self)
-        GameLogic.__init__(self)
-        self.title("Jeu d'Aventure")
-        self.geometry("800x600")
-        self.background = PhotoImage(file = self.images["begining"])
-        self.create_widgets()
-
-    def create_widgets(self):
-        """Créer les widgets de l'interface"""
-        # Background
-        self.image_label = tk.Label(self, image = self.background)
-        self.image_label.place(x=0, y=0, relwidth = 1, relheight = 1)
+        Examples:
         
-        # Zone de texte pour afficher le text
-        self.text_label = tk.Label(self, text=self.get_current_text(), font=("Arial", 14), wraplength=350)
-        self.text_label.pack(pady=20)
+        >>> from game import Game
+        >>> game = Game()
+        >>> game.setup()
+        >>> go(game, ["go", "N"], 1)
+        True
+        >>> go(game, ["go", "N", "E"], 1)
+        False
+        >>> go(game, ["go"], 1)
+        False
 
-        # Zone de teste pour entrer la réponse
-        self.answer_entry = tk.Entry(self, font=("Arial", 14), width=30)
-        self.answer_entry.pack(pady=10)
+        """
+        from graphisme import DEBUG
 
-        # Bouton pour soumettre la réponse
-        self.submit_button = tk.Button(self, text="Soumettre", font=("Arial", 14), command=self.process_command)
-        self.submit_button.pack(pady=10)
-
-        # Bouton pour quitter le jeu
-        #self.quit_button = tk.Button(self, text="Quitter", font=("Arial", 14), command=self.quit_game)
-        #self.quit_button.pack(pady=10)
-
-    def process_command(self):
-        """Soumettre la réponse et passer à la question suivante"""
-        command_string = self.answer_entry.get()
-
-        if self.nb == 1:
-            self.setup()
-        
-        elif self.nb == 0:
-            self.player = Player(command_string) 
-
-        elif  len(command_string) != 0 :
-            # Split the command string into a list of words
-            list_of_words = command_string.split(" ")
-
+        player = game.player
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
             command_word = list_of_words[0]
+            game.warning = MSG1.format(command_word=command_word)
+            return False
 
-            # If the command is not recognized, print an error message
-            if command_word not in self.commands.keys():
-                messagebox.showwarning(f"\nCommande '{command_word}' non reconnue. Entrez 'help' pour voir la liste des commandes disponibles.\n")
-            # If the command is recognized, execute it
-            else:
-                command = self.commands[command_word]
-                self.treat_command(command, list_of_words)
+        # Get the direction from the list of words.
+        direction = list_of_words[1]
 
+        #Remplace les differentes expressions possibles d'une même commande par le nom de la commande
+        if direction in ("n", "Nord", "nord", "NORD") :
+            direction = "N"
+        elif direction in ("s", "Sud", "sud", "SUD") :
+            direction = "S"
+        elif direction in ("e", "Est", "est", "EST") :
+            direction = "E"
+        elif direction in ("o", "Ouest", "ouest", "OUEST") :
+            direction = "O"
+        elif direction in ("u", "Up", "up", "UP") :
+            direction = "U"
+        elif direction in ("d", "Down", "down", "DOWN") :
+            direction = "D"
 
-        if not self.finished:
-            self.update_widgets()
+        #Si la direction entrée n'est pas connue, affichage d'un message d'erreur
+        if direction not in game.knowndirections :
+            command_word = list_of_words[0]
+            game.warning = MSG2.format(command_word=command_word, entered_world=direction)
+            game.text = player.current_room.get_long_description()
+            return False
+        
+        # Move the player in the direction specified by the parameter.
+        player.move(direction, game)
+
+        # Fait bouger les pnj
+        for knownroom in game.rooms:
+            for caracter in knownroom.inventory_caracter.caracter_dict.values():
+                caracter.move()
+                if DEBUG == True:
+                    game.text = game.text + "\nEst présent " + caracter.__str__()
+
+        return True
+
+    def quit(game, list_of_words, number_of_parameters):
+        """
+        Quit the game.
+
+        Args:
+            game (Game): The game object.
+            list_of_words (list): The list of words in the command.
+            number_of_parameters (int): The number of parameters expected by the command.
+
+        Returns:
+            bool: True if the command was executed successfully, False otherwise.
+
+        Examples:
+
+        >>> from game import Game
+        >>> game = Game()
+        >>> game.setup()
+        >>> quit(game, ["quit"], 0)
+        True
+        >>> quit(game, ["quit", "N"], 0)
+        False
+        >>> quit(game, ["quit", "N", "E"], 0)
+        False
+        
+        """
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            game.warning = MSG0.format(command_word=command_word)
+            return False
+        
+        # Set the finished attribute of the game object to True.
+        player = game.player
+        game.warning = game.warning + f"\nMerci {player.name} d'avoir joué. Au revoir.\n"
+        game.finished = True
+        return True
+
+    def help(game, list_of_words, number_of_parameters):
+        """
+        Print the list of available commands.
+        
+        Args:
+            game (Game): The game object.
+            list_of_words (list): The list of words in the command.
+            number_of_parameters (int): The number of parameters expected by the command.
+
+        Returns:
+            bool: True if the command was executed successfully, False otherwise.
+
+        Examples:
+
+        >>> from game import Game
+        >>> game = Game()
+        >>> game.setup()
+        >>> help(game, ["help"], 0)
+        True
+        >>> help(game, ["help", "N"], 0)
+        False
+        >>> help(game, ["help", "N", "E"], 0)
+        False
+
+        """
+
+        # If the number of parameters is incorrect, print an error message and return False.
+        l = len(list_of_words)
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            game.warning = MSG0.format(command_word=command_word)
+            return False
+        
+        # Print the list of available commands.
+        game.text = "Voici les commandes disponibles:"  #METTRE EN PAS WARNING
+        for command in game.commands.values():
+            game.text = game.text + "\n\t- " + str(command)
+        game.text = game.text + "\n" + game.player.current_room.get_long_description() + game.player.get_history(game)
+        return True
+    
+    def back(game, list_of_words, number_of_parameters):
+
+        player = game.player
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            game.warning = MSG0.format(command_word=command_word)
+            return False
+        
+        #si le retourd en arrière est possible
+        if len(player.history) == 1:
+            command_word = list_of_words[0]
+            game.warning = MSG3.format(command_word=command_word)
         else:
-            self.end_game()
+            # Fait bouger les pnj
+            for knownroom in game.rooms:
+                for caracter in knownroom.inventory_caracter.caracter_dict.values():
+                    caracter.move()
 
-    def update_widgets(self):
-        """Met à jour la question affichée"""
-        self.nb = self.nb + 1
-        self.answer_entry.delete(0, tk.END)  # Effacer l'entrée de la réponse
-        self.text_label.config(text=self.get_current_text())
-        if self.nb > 1 :
-            self.background = PhotoImage(file = self.images[self.player.current_room.name])
-            self.image_label.config(image = self.background)
-        if self.warning != "" :
-            messagebox.showwarning(self.warning)
-        self.warning = ""
+            # Retourd en arrière
+            player.history.pop()
+            player.current_room = player.history[-1]
+            game.text = player.current_room.get_long_description() + player.get_history(game)
 
 
-    def end_game(self):
-        """Fin du jeu, affiche le score"""
-        messagebox.showinfo("Jeu terminé", f"Votre score final est : ")#{self.get_score()}/{len(self.questions)}
-        self.quit_game()
+    
+    def look(game, list_of_words, number_of_parameters):
+        
+        player = game.player
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            game.warning = MSG0.format(command_word=command_word)
+            return False
+        
+        player.current_room.inventory_caracter.get_inventory(game)
 
-    def quit_game(self):
-        """Quitte le jeu"""
-        self.destroy()
 
-# Lancer le jeu
-def main():
-    jeu = GameApp()
-    jeu.mainloop()
+    def take(game, list_of_words, number_of_parameters):
+        
+        player = game.player
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            game.warning = MSG1.format(command_word=command_word)
+            return False
 
-if __name__ == "__main__":
-    main()
+        # Get the object from the list of words.
+        object = list_of_words[1]
+
+        #Si la direction entrée n'est pas connue, affichage d'un message d'erreur
+        if object not in (player.current_room.inventory_caracter.inventory_dict.keys() or player.current_room.inventory_caracter.caracter_dict.keys()) :
+            command_word = list_of_words[0]
+            game.warning = MSG2.format(command_word=command_word, entered_world=object)
+            return False
+        
+        if object in (player.current_room.inventory_caracter.inventory_dict.keys()):
+            # Attrape l'oject.
+            player.inventory_caracter.inventory_dict[object] = player.current_room.inventory_caracter.inventory_dict.get(object)
+            del player.current_room.inventory_caracter.inventory_dict[object]
+            game.text = f"\nVous avez pris l'object {object}.\n" + player.current_room.get_long_description() + player.get_history(game)
+        else:
+            # Attrape l'oject.
+            player.inventory_caracter.caracter_dict[object] = player.current_room.inventory_caracter.caracter_dict.get(object)
+            del player.current_room.inventory_caracter.caracter_dict[object]
+            game.text = f"\nVous avez pris l'individu {object}.\n" + player.current_room.get_long_description() + player.get_history(game)
+        return True
+    
+    def drop(game, list_of_words, number_of_parameters):
+        
+        player = game.player
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            game.warning = MSG1.format(command_word=command_word)
+            return False
+
+        # Get the object from the list of words.
+        object = list_of_words[1]
+
+        #Si la direction entrée n'est pas connue, affichage d'un message d'erreur
+        if object not in player.inventory_caracter.inventory_dict.keys() :
+            command_word = list_of_words[0]
+            game.warning = MSG2.format(command_word=command_word, entered_world=object)
+            return False
+        
+        # Attrape l'oject.
+        player.current_room.inventory_caracter.inventory_dict[object] = player.inventory_caracter.inventory_dict.get(object)
+        del player.inventory_caracter.inventory_dict[object]
+        game.text = f"\nVous avez déposé l'object {object}.\n" + player.current_room.get_long_description() + player.get_history(game)
+        return True
+    
+
+    def check(game, list_of_words, number_of_parameters):
+        
+        player = game.player
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            game.warning = MSG0.format(command_word=command_word)
+            return False
+        
+        player.inventory_caracter.get_inventory(game)
+        return True
+    
+    def talk (game, list_of_words, number_of_parameters):
+
+        player = game.player
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            game.warning = MSG1.format(command_word=command_word)
+            return False
+
+        # Get the pnj from the list of words.
+        pnj = list_of_words[1]
+
+        #
+        if pnj not in player.current_room.inventory_caracter.caracter_dict.keys() :
+            command_word = list_of_words[0]
+            game.warning = MSG2.format(command_word=command_word, entered_world=pnj) + player.current_room.get_long_description()
+            return False
+        #
+        player.current_room.inventory_caracter.caracter_dict[pnj].get_msg(game)
+
+        return True
+
+
+
+
