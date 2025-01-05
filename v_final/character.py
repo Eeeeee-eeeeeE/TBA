@@ -61,7 +61,5 @@ class Character:
                 game.commands["quit"].action(game.command["quit"], ["quit"], game.command["quit"].numbers)
         #print the messages in a rotating manner
         msg = self.msgs.pop(0)
-        print("\n" + msg + "\n")
+        game.text = "\n" + msg + "\n" + game.player.current_room.get_long_description() + game.player.get_history(game)
         self.msgs.append(msg) 
-
-    

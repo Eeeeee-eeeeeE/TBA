@@ -17,23 +17,27 @@ class Inventory:
             thing.characters
         except AttributeError :
             if thing.inventory == {} :
-                return f"\nVotre inventaire est vide.\n"
+                game.text = "\nVotre inventaire est vide, vous ne possédez rien.\n" + game.text
             else :
                 l_item = ''
                 total_weight = 0
                 for i in thing.inventory.values() :
                     l_item = l_item + '- ' + "{0} : {1} ({2} kg)".format(i.name, i.description, i.weight) + '\n'
                     total_weight = total_weight + i.weight
-                return f"\nVous disposez des items suivants :\n{l_item} \n Le poids total de ce que vous portez est de {total_weight} kg.\n" 
+                game.text = f"\nVous disposez des items suivants :\n{l_item} \n Le poids total de ce que vous portez est de {total_weight} kg.\n" + game.player.current_room.get_long_description() + game.player.get_history(game)
         else :
             if thing.inventory == dict() and thing.characters == dict()  :
-                return f"\nIl n'y a rien ici.\n"
+                game.text = "\nIl n'y a rien d'autre ici.\n" + game.text
             else :
                 l = ''
                 for i in thing.inventory.values() :
                     l = l + '- ' + "{0} : {1} ({2} kg)".format(i.name, i.description, i.weight) + '\n'
                 for c in thing.characters.values() :
                     l = l + '- ' + "{0} : {1}".format(c.name, c.description) + '\n'
-                return f"\nOn voit :\n{l}"
-        
-            
+                game.text = f"\nOn voit :\n{l}" +  + game.player.current_room.get_long_description() + game.player.get_history(game)
+
+    # Define the constructor. 
+    def __init__(self, type):
+        self.inventory_dict = {}
+        self.caracter_dict = {}
+        self.type = type

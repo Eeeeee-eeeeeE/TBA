@@ -24,5 +24,3 @@ class Item:
     # The string representation of the item.
     def __str__(self):
         return "{0} : {1} ({2} kg)".format(self.name, self.description, self.weight)
-
-    
