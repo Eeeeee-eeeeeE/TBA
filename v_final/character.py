@@ -55,6 +55,10 @@ class Character:
         if self.name == "mister" :
             if "truc" in game.player.inventory :
                 self.msg.insert(0, "\n truc trop super important")
+        if self.name == "mister" :
+            if "truc" in game.player.inventory :
+                game.warning = f"Vous êtes mort."
+                game.commands["quit"].action(game.command["quit"], ["quit"], game.command["quit"].numbers)
         #print the messages in a rotating manner
         msg = self.msgs.pop(0)
         print("\n" + msg + "\n")

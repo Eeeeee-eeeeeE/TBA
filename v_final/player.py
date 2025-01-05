@@ -40,9 +40,15 @@ class Player():
         self.history.append(self.current_room)
         # Set the current room to the next room.
         self.current_room = next_room
+
         print(self.current_room.get_long_description())
         #print the history
         print(self.get_history())
+
+        # Affiche les lieux déjà visités puis ajoute le lieu présent à l'historique
+        self.history.append(next_room)
+        game.text = self.current_room.get_long_description() + self.get_history(game)
+
         return True
 
     def get_history(self):

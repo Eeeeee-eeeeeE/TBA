@@ -99,7 +99,7 @@ class Actions:
 
     def quit(game, list_of_words, number_of_parameters):
         """
-        Quit the game.
+        Quit the game (the player asked to quit).
 
         Args:
             game (Game): The game object.

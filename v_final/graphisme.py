@@ -201,7 +201,7 @@ class Graphic(tk.Tk, GameLogic):
 #OBLIGATOIRE : POUVOIR PERDRE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     #End of game
     def end_game(self):
-        messagebox.showinfo("Jeu terminé", f"Votre score final est : ")#{self.get_score()}/{len(self.questions)}
+        messagebox.showinfo(self.warning)#"Jeu terminé", f"Votre score final est : "#{self.get_score()}/{len(self.questions)}
         self.quit_game()
 
     #Quit the game permanently

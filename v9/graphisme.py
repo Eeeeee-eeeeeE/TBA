@@ -206,6 +206,7 @@ class GameApp(tk.Tk, GameLogic):
         """Quitte le jeu"""
         self.destroy()
 
+
 # Lancer le jeu
 def main():
     game = GameApp()
