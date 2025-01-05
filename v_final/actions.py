@@ -14,13 +14,18 @@
 # The MSG0 variable is used when the command does not take any parameter.
 MSG0 = "\nLa commande '{command_word}' ne prend pas de paramètre.\n"
 # The MSG1 variable is used when the command takes 1 parameter.
-MSG1 = "\nLa commande '{command_word}' prend 1 seul paramètre.\n"
+MSG1 = "\nLa commande '{command_word}' prend 1 paramètre exactement.\n"
 # The MSG2 variable is used when the command go is used with an invalid direction.
 MSG2 = "\nLa direction '{direction}' non reconnue."
 # The MSG3 variable is used when the command back is used with an empty history.
 MSG3 = "\nL'historique est vide."
 # The MSG4 variable is used when the command take is used with a wrong object.
-MSG4 = "\nL'objet '{item}' n'est pas dans {inventaire_ou_pièce}.\n"
+MSG4 = "\nLe '{item}' n'est pas dans {inventaire_ou_pièce}.\n"
+# The MSG5 variable is used when the command take is used with an object that is too heavy.
+MSG5 = "\nLe '{item}' est trop lourd pour rentrer dans votre inventaire.\n"
+
+from inventory import Inventory
+
 
 class Actions:
 
@@ -61,7 +66,7 @@ class Actions:
         # Get the direction from the list of words.
         direction = list_of_words[1]
         
-        #Remplace les differentes expressions possibles d'une même commande par le nom de la commande
+        #Replace the different possible expressions of the same command
         if direction in ("n", "Nord", "nord", "NORD") :
             direction = "N"
         elif direction in ("s", "Sud", "sud", "SUD") :
@@ -83,6 +88,13 @@ class Actions:
             command_word = list_of_words[0]
             print(MSG2.format(direction=direction))
             print(game.player.current_room.get_long_description())
+
+        #Moves the pnjs
+        for knownroom in game.rooms:
+            characters_before = list(knownroom.characters.values())
+            for character in characters_before:
+                character.move()
+
         return True
 
     def quit(game, list_of_words, number_of_parameters):
@@ -213,7 +225,7 @@ class Actions:
             print(MSG0.format(command_word=command_word))
             return False
         
-        print(game.player.current_room.get_inventory())
+        print(Inventory.get_inventory(game.player.current_room))
         return True
 
     def take(game, list_of_words, number_of_parameters):
@@ -242,8 +254,21 @@ class Actions:
         if object not in game.player.current_room.inventory :
             print(MSG4.format(item=object, inventaire_ou_pièce='la pièce'))
             return False
-        
-        # If possible, put the object in the inventory.
+
+        #If the maximum weight is reached, print an error message and return False.
+
+        #Calculates the weight of is currently in inventory
+        total_weight = 0
+        for i in game.player.inventory.values() :
+            total_weight = total_weight + i.weight
+        if total_weight + game.player.current_room.inventory.get(object).weight > game.player.inventory_weight_max :
+            print(MSG5.format(item=object))
+            print("Le poids total de ce que vous portez est de {total_weight} kg.".format(total_weight=total_weight), end=" ")
+            print("Le maximum de ce que vous pouvez porter est de {max_weight} kg.".format(max_weight=game.player.inventory_weight_max), end=" ")
+            print("Si vous voulez prendre cet item il faut que vous vous deparassiez de {to_drop} kg au moins.".format(to_drop=game.player.current_room.inventory.get(object).weight -(game.player.inventory_weight_max - total_weight)), end="\n")
+            return False
+
+        #Put the object in the inventory.
         game.player.inventory[object] = game.player.current_room.inventory.get(object)
         del game.player.current_room.inventory[object]
         print("\nVous avez pris l'object '{0}'.\n".format(object))
@@ -265,7 +290,7 @@ class Actions:
         l = len(list_of_words)
         if l != number_of_parameters + 1:
             command_word = list_of_words[0]
-            print(MSG0.format(command_word=command_word))
+            print(MSG1.format(command_word=command_word))
             return False
         
         # Get the object from the list of words.
@@ -276,7 +301,7 @@ class Actions:
             print(MSG4.format(item=object, inventaire_ou_pièce="l'inventaire"))
             return False
         
-        # If possible, droop the object in the room.
+        #Droop the object in the room.
         game.player.current_room.inventory[object] = game.player.inventory.get(object)
         del game.player.inventory[object]
         print("\nVous avez déposé l'object '{0}'.\n".format(object))
@@ -301,9 +326,9 @@ class Actions:
             print(MSG0.format(command_word=command_word))
             return False
         
-        print(game.player.get_inventory())
+        print(Inventory.get_inventory(game.player))
         return True
-
+    
     def talk (game, list_of_words, number_of_parameters):
 
         player = game.player
@@ -311,22 +336,19 @@ class Actions:
         # If the number of parameters is incorrect, print an error message and return False.
         if l != number_of_parameters + 1:
             command_word = list_of_words[0]
-            game.warning = MSG1.format(command_word=command_word)
+            print(MSG1.format(command_word=command_word))
             return False
 
         # Get the pnj from the list of words.
         pnj = list_of_words[1]
 
-        #
-        if pnj not in player.current_room.inventory_caracter.caracter_dict.keys() :
+        #If the pnj is not in the current room, print an error message and return False.
+        if pnj not in  game.player.current_room.characters  :
             command_word = list_of_words[0]
-            game.warning = MSG2.format(command_word=command_word, entered_world=pnj) + player.current_room.get_long_description()
+            print(MSG4.format(item=command_word, inventaire_ou_pièce="la pièce"))
+            #print(player.current_room.get_long_description())
             return False
-        #
-        player.current_room.inventory_caracter.caracter_dict[pnj].get_msg(game)
-
+        
+        #Print a message of the character.
+        player.current_room.characters[pnj].get_msg(game)
         return True
-
-
-
-

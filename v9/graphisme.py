@@ -208,8 +208,8 @@ class GameApp(tk.Tk, GameLogic):
 
 # Lancer le jeu
 def main():
-    jeu = GameApp()
-    jeu.mainloop()
+    game = GameApp()
+    game.mainloop()
 
 if __name__ == "__main__":
     main()
