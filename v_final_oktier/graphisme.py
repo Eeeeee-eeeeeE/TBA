@@ -70,7 +70,7 @@ class Game():
         self.rooms.append(brokenglass)
         glitter = Room("Glitter", "une salle où se dresse au milieu une satue à paillettes rose. Cette statue représente un homme, environ la quarantaine et demi, barbu de 12 jours, petites lunettes losange sur un nez imposant, une interminablement longue blouse de scientifique sur le dos, et deux yeux roses.")
         self.rooms.append(glitter)
-        musty = Room("Musty", "une petit pièce humide et sombre. Les murs sont tapis d'une couche épaisse de moisissure.")
+        musty = Room("Musty", "une salle où se dresse au milieu une satue à paillettes rose. Cette statue représente un homme, environ la quarantaine et demi, barbu de 12 jours, petites lunettes losange sur un nez imposant, une interminablement longue blouse de scientifique sur le dos, et deux yeux roses..")
         self.rooms.append(musty)
         out = Room("Out", "une large pièce acceuillante vu sur un jardin. Il y fait un peu frais, le vent s'engouffre par le pas d'une petite porte dissimulée.")
         self.rooms.append(out)
