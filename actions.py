@@ -13,8 +13,8 @@
 # The error message is stored in the MSG0 and MSG1 variables and formatted with the command_word variable, the first word in the command.
 # The MSG0 variable is used when the command does not take any parameter.
 MSG0 = "\nLa commande '{command_word}' ne prend pas de paramètre.\n"
-# The MSG1 variable is used when the command takes 1 parameter.
-MSG1 = "\nLa commande '{command_word}' prend 1 paramètre exactement.\n"
+# The MSG1 variable is used when the command takes number_of_parameters parameter.
+MSG1 = "\nLa commande '{command_word}' prend {number_of_parameters} paramètre exactement.\n"
 # The MSG2 variable is used when the command go is used with an invalid direction.
 MSG2 = "\nLa direction '{direction}' non reconnue."
 # The MSG3 variable is used when the command back is used with an empty history.
@@ -60,7 +60,7 @@ class Actions:
         # If the number of parameters is incorrect, print an error message and return False.
         if l != number_of_parameters + 1:
             command_word = list_of_words[0]
-            game.warning = MSG1.format(command_word=command_word)
+            game.warning = MSG1.format(command_word=command_word, number_of_parameters=number_of_parameters)
             return False
 
         # Get the direction from the list of words.
@@ -257,7 +257,7 @@ class Actions:
         l = len(list_of_words)
         if l != number_of_parameters + 1:
             command_word = list_of_words[0]
-            game.warning = MSG1.format(command_word=command_word)
+            game.warning = MSG1.format(command_word=command_word, number_of_parameters=number_of_parameters)
             return False
         
         # Get the object from the list of words.
@@ -305,7 +305,7 @@ class Actions:
         l = len(list_of_words)
         if l != number_of_parameters + 1:
             command_word = list_of_words[0]
-            game.warning = MSG1.format(command_word=command_word)
+            game.warning = MSG1.format(command_word=command_word, number_of_parameters=number_of_parameters)
             return False
         
         # Get the object from the list of words.
@@ -352,7 +352,7 @@ class Actions:
         # If the number of parameters is incorrect, print an error message and return False.
         if l != number_of_parameters + 1:
             command_word = list_of_words[0]
-            game.warning = MSG1.format(command_word=command_word)
+            game.warning = MSG1.format(command_word=command_word, number_of_parameters=number_of_parameters)
             return False
 
         # Get the pnj from the list of words.
@@ -361,7 +361,7 @@ class Actions:
         #If the pnj is not in the current room, print an error message and return False.
         if pnj not in  game.player.current_room.characters  :
             command_word = list_of_words[0]
-            game.warning = MSG4.format(item=command_word, inventaire_ou_pièce="la pièce") + player.current_room.get_long_description()
+            game.warning = MSG4.format(item=pnj, inventaire_ou_pièce="la pièce") + player.current_room.get_long_description()
             return False
         
         #Print a message of the character.
@@ -385,3 +385,33 @@ class Actions:
         game.text = player.current_room.get_long_description()
         return True
 
+    def answer (game, list_of_words, number_of_parameters):
+
+            player = game.player
+            l = len(list_of_words)
+            # If the number of parameters is incorrect, print an error message and return False.
+            if l != number_of_parameters + 1:
+                command_word = list_of_words[0]
+                game.warning = MSG1.format(command_word=command_word, number_of_parameters=number_of_parameters)
+                return False
+
+            # Get the pnj from the list of words.
+            pnj = list_of_words[1]
+            qcm = list_of_words[2]
+
+            #If the pnj is not in the current room, print an error message and return False.
+            if pnj not in game.player.current_room.characters :
+                command_word = list_of_words[0]
+                game.warning = MSG4.format(item=pnj, inventaire_ou_pièce="la pièce") + player.current_room.get_long_description()
+                return False
+            
+            #If the answer is wrong, print an error message and return False.
+            if qcm not in player.current_room.characters[pnj].answer :
+                game.warning = f"Mauvaise réponse, vous êtes mort. "
+                game.commands["quit"].action(game, ["quit"], game.commands["quit"].number_of_parameters)
+            
+            #Print a message of the character.
+            else :
+                game.player.current_room.characters[pnj].msgs.insert(0, "\n truc trop trop super important") 
+                game.player.current_room.characters[pnj].get_msg(game)
+            return True

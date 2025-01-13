@@ -29,6 +29,7 @@ class Character:
         self.description = description
         self.msgs = msgs
         self.area = area
+        self.answer = []
 
     def __str__(self):
         return  "{0} : {1}".format(self.name, self.description)
@@ -52,14 +53,16 @@ class Character:
         return False
 
     def get_msg(self, game):
-        #if some conditions are met, a message is unlocked
+        #if some conditions are met, a message is unlocked or, on the contrary, the player dies
         if self.name == "mister" :
+            
             if "truc" in game.player.inventory :
                 self.msgs.insert(0, "\n truc trop super important")
-        if self.name == "mister" :
+
             if not ("truc" in game.player.inventory) :
-                game.warning = f"Vous êtes mort. "
-                game.commands["quit"].action(game, ["quit"], game.commands["quit"].number_of_parameters)
+                game.warning = f"Mister vous a tué, vous êtes mort. "
+                game.commands["quit"].action(game, ["quit"], game.commands["quit"].number_of_parameters)  
+
         #print the messages in a rotating manner
         msg = self.msgs.pop(0)
         game.text = "\n" + msg + "\n" + game.player.current_room.get_long_description() + game.player.get_history()

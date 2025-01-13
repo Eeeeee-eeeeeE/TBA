@@ -57,6 +57,8 @@ class Game():
         self.commands["talk"] = talk
         clear = Command("clear", " : efface l'historique", Actions.clear, 0)
         self.commands["clear"] = clear
+        answer = Command("answer", " <someone> <letter> : pour répondre à un pnj", Actions.answer, 2)
+        self.commands["answer"] = answer
 
         # Setup rooms
 
@@ -112,6 +114,7 @@ class Game():
         wardrobeE.characters["mister"] = mister
         harry = Character("harry", "un lapin ferroce", wardrobeE, ["tu es à croquer", "j t'aime bien (mm si je pref les carottes)"], [wardrobeE, wardrobeO])
         wardrobeE.characters["harry"] = harry
+        harry.answer = 'a'
 
         #Set of all the possible directions
         self.possible_direction = {k for r in self.rooms for k in r.exits.keys() }
@@ -143,7 +146,7 @@ class Graphic(tk.Tk, Game):
         tk.Tk.__init__(self)
         Game.__init__(self)
         self.title("Jeu d'Aventure")
-        self.geometry("800x800")
+        self.geometry("1000x700")
         self.background = PhotoImage(file = self.images["begining"])
         self.create_widgets()
 
