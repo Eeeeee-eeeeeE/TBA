@@ -5,12 +5,21 @@ class Inventory:
     This class represents an inventory. An inventory is composed of a name, a description and its weight.
 
     Attributes:
+        inventory_dict
+        caracter_dict
+        type
         thing (Room or Player): The place or player to do the inventory about.
 
     Methods:
         get_inventory(thing) : Print the list of what is in the inventory.
 
     """
+"""????????????????????????????????????????? init"""
+    # Define the constructor. 
+    def __init__(self, type):
+        self.inventory_dict = {}
+        self.caracter_dict = {}
+        self.type = type
     
     def get_inventory(thing):
         try :
@@ -36,8 +45,4 @@ class Inventory:
                     l = l + '- ' + "{0} : {1}".format(c.name, c.description) + '\n'
                 game.text = f"\nOn voit :\n{l}" +  + game.player.current_room.get_long_description() + game.player.get_history(game)
 
-    # Define the constructor. 
-    def __init__(self, type):
-        self.inventory_dict = {}
-        self.caracter_dict = {}
-        self.type = type
+    

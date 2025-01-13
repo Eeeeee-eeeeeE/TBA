@@ -7,7 +7,10 @@ class Room:
     Attributes:
         name (str): The name of the room.
         description (str): The description of the room.
-        direction (function): The direction the player wants to go to.
+        direction (str): The direction the player wants to go to.
+        exits
+        inventory
+        characters
 
     Methods:
         __init__(self, name, description) : The constructor.

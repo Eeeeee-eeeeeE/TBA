@@ -126,11 +126,11 @@ class Game():
 
 
 # Class of the graphical interface with tkinter
-class Graphic(tk.Tk, GameLogic):
+class Graphic(tk.Tk, Game):
     # The constructor.
     def __init__(self):
         tk.Tk.__init__(self)
-        GameLogic.__init__(self)
+        Game.__init__(self)
         self.title("Jeu d'Aventure")
         self.geometry("800x600")
         self.background = PhotoImage(file = self.images["begining"])

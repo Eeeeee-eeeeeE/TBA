@@ -82,7 +82,7 @@ class Game:
         wardrobeO.inventory["truc"] = truc
 
         #Setup characters of the rooms
-        mister = Character("mister", "un mister étrange", wardrobeE, ["hola"], [wardrobeE, wardrobeO])
+        mister = Character("mister", "un mister étrange", wardrobeE, ["hola", "tomate"], [wardrobeE, wardrobeO])
         wardrobeE.characters["mister"] = mister
         
         #Set of all the possible directions

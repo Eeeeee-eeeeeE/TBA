@@ -11,6 +11,7 @@ class Player():
         current_room (Room): The current room.
         history (list) : The rooms where the player has already been.
         inventory(dict) : The inventory of the player.
+        inventory_weight_max(int) : The max weight of the inventory
 
     Methods:
         __init__(self, name, current_room) : The constructor.
