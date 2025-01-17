@@ -29,7 +29,7 @@ class Inventory:
                 total_weight = 0
                 for i in thing.inventory.values() :
                     l_item = l_item + '- '
-                    l_item += "{0} : {1} ({2} kg)".format(i.name, i.description, i.weight) + '\n'
+                    l_item += f"{0} : {1} ({2} kg)".format(i.name, i.description, i.weight) + '\n'
                     total_weight = total_weight + i.weight
                 game.text = f"\nVous disposez des items suivants :\n{l_item}"
                 game.text += f"\n Le poids total de ce que vous portez est de {total_weight} kg.\n"
@@ -43,7 +43,9 @@ class Inventory:
             else :
                 l = ''
                 for i in thing.inventory.values() :
-                    l = l + '- ' + f"{0} : {1} ({2} kg)".format(i.name, i.description, i.weight) + '\n'
+                    l =l+'- '+f"{0} : {1} ({2} kg)".format(i.name, i.description, i.weight) +'\n'
                 for c in thing.characters.values() :
                     l = l + '- ' + f"{0} : {1}".format(c.name, c.description) + '\n'
-                game.text = f"\nOn voit :\n{l}" + game.player.current_room.get_long_description() + game.player.get_history()
+                game.text = f"\nOn voit :\n{l}"
+                game.text += game.player.current_room.get_long_description()
+                game.text += game.player.get_history()

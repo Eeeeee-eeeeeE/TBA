@@ -1,40 +1,42 @@
-"""Description: Game class and Graphic class"""
+# Description: Game class and Graphic class
 
 # Import modules
-
-import tkinter as tk
-from tkinter import messagebox, PhotoImage
 
 from room import Room
 from player import Player
 from command import Command
 from actions import Actions
 from item import Item
-from character import Character
+from inventory import Inventory
+from character import Character 
+
+import tkinter as tk
+from tkinter import messagebox, PhotoImage
 
 DEBUG = True
 
 # Game class as written in class
 class Game():
-    """Game class"""
 
+    # The constructor.
     def __init__(self):
-        """ The constructor"""
         self.finished = False
         self.rooms = []
         self.commands = {}
         self.player = None
-        self.possible_direction = set()
+        self.possible_direction = set() 
 
         self.text = "" #the text to display on the graphical interface
         self.warning = ""
-        self.nb = 0 #nb of interactions with the player
+        #SCORE EN FONCTION DU NB INTERACTION 
+        self.nb = 0 #nb of interactions with the player 
         self.images = dict([('begining', 'begining.png')])
 
+    # Setup the game
     def setup(self):
-        """Setup the game"""
 
         # Setup commands
+
         help = Command("help", " : afficher cette aide", Actions.help, 0)
         self.commands["help"] = help
         quit = Command("quit", " : quitter le jeu", Actions.quit, 0)
@@ -53,15 +55,19 @@ class Game():
         self.commands["check"] = check
         talk = Command("talk", " <someone> : parler à un pnj", Actions.talk, 1)
         self.commands["talk"] = talk
+        clear = Command("clear", " : efface l'historique", Actions.clear, 0)
+        self.commands["clear"] = clear
+        answer = Command("answer", " <someone> <letter> : pour répondre à un pnj", Actions.answer, 2)
+        self.commands["answer"] = answer
 
         # Setup rooms
 
-        wardrob_o = Room("wardrob_o", "la partie de gauche d'une grande salle lugubre sans fenêtre.")
-        self.rooms.append(wardrob_o)
-        self.images['wardrob_o'] = 'wardrob_o.png'
-        wardrob_e = Room("wardrob_e", "la partie de droite d'une grande salle lugubre sans fenêtre.")
-        self.rooms.append(wardrob_e)
-        self.images['wardrob_e'] = 'wardrob_e.png'
+        wardrobeO = Room("WardrobeO", "la partie de gauche d'une grande salle lugubre sans fenêtre.")
+        self.rooms.append(wardrobeO)
+        self.images['WardrobeO'] = 'WardrobeO.png'
+        wardrobeE = Room("WardrobeE", "la partie de droite d'une grande salle lugubre sans fenêtre.")
+        self.rooms.append(wardrobeE)
+        self.images['WardrobeE'] = 'WardrobeE.png'
         enigma = Room("Enigma", "une salle modeste. Devant vous se tient un petit monsieur à l'air malicieux.")
         self.rooms.append(enigma)
         self.images['Enigma'] = 'Enigma.png'
@@ -83,15 +89,15 @@ class Game():
         tree = Room("Tree", "une parcelle de terre sur laquelle s'élève un acassia centenaire. Gloire de la nature et de Gaya, son tron est épais comme une maison, ses branches ont la circonférence d'une centrale nucléaire et ses feuilles sont petite comme des petites libellules.  Malheureseument pour les dryades, cet arbre garde la trace de son exploitation : des balafres multiples décorent son tron.")
         self.rooms.append(tree)
         self.images['Tree'] = 'Tree.png'
-
+        
 
         # Create exits for rooms
 
-        wardrob_o.exits = {"N" : brokenglass, "E" : wardrob_e, "S" : None, "O" : None, "U" : None, "D" : nothing}
-        wardrob_e.exits = {"N" : None, "E" : None, "S" : None, "O" : wardrob_o, "U" : None, "D" : enigma}
-        enigma.exits = {"N" : None, "E" : None, "S" : None, "O" : nothing, "U" : wardrob_e, "D" : None}
-        nothing.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : wardrob_o, "D" : None}
-        brokenglass.exits = {"N" : None, "E" : glitter, "S" : wardrob_o, "O" : None, "U" : None, "D" : None}
+        wardrobeO.exits = {"N" : brokenglass, "E" : wardrobeE, "S" : None, "O" : None, "U" : None, "D" : nothing}
+        wardrobeE.exits = {"N" : None, "E" : None, "S" : None, "O" : wardrobeO, "U" : None, "D" : enigma}
+        enigma.exits = {"N" : None, "E" : None, "S" : None, "O" : nothing, "U" : wardrobeE, "D" : None}
+        nothing.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : wardrobeO, "D" : None}
+        brokenglass.exits = {"N" : None, "E" : glitter, "S" : wardrobeO, "O" : None, "U" : None, "D" : None}
         glitter.exits = {"N" : None, "E" : None, "S" : None, "O" : brokenglass, "U" : None, "D" : out}
         musty.exits = {"N" : None, "E" : out, "S" : None, "O" : None, "U" : None, "D" : None}
         out.exits = {"N" : None, "E" : tree, "S" : None, "O" : musty, "U" : glitter, "D" : None}
@@ -99,54 +105,53 @@ class Game():
 
         #Setup items of the rooms
         truc = Item("truc", "un truc étrange", 50)
-        wardrob_o.inventory["truc"] = truc
+        wardrobeO.inventory["truc"] = truc
         brindille = Item("brindille", "un baton de bois à votre echelle", 0.2)
-        wardrob_o.inventory["brindille"] = brindille
+        wardrobeO.inventory["brindille"] = brindille
 
         #Setup characters of the rooms
-        mister = Character("mister", "un mister étrange", wardrob_e, ["hola"], [wardrob_e, wardrob_o])
-        wardrob_e.characters["mister"] = mister
-        harry = Character("harry", "un lapin ferroce", wardrob_e, ["tu es à croquer", "j t'aime bien (mm si je pref les carottes)"], [wardrob_e, wardrob_o])
-        wardrob_e.characters["harry"] = harry
+        mister = Character("mister", "un mister étrange", wardrobeE, ["hola"], [wardrobeE, wardrobeO])
+        wardrobeE.characters["mister"] = mister
+        harry = Character("harry", "un lapin ferroce", wardrobeE, ["tu es à croquer", "j t'aime bien (mm si je pref les carottes)"], [wardrobeE, wardrobeO])
+        wardrobeE.characters["harry"] = harry
+        harry.answer = 'a'
 
         #Set of all the possible directions
         self.possible_direction = {k for r in self.rooms for k in r.exits.keys() }
 
         # Setup starting room
-        self.player.current_room = wardrob_o
+        self.player.current_room = wardrobeO
 
         #A ENLEVER POUR TESTER
         #Setup the text to display
         self.text = self.player.current_room.get_long_description()
 
+    #Returns the current question
     def get_current_text(self):
-        """Returns the current question"""
         if self.nb == 0:  #if it is the first interaction of the game
             self.text = "\nEntrez votre nom: "
         elif self.nb == 1: #if it is the second interaction of the game
             self.text = f"\nBienvenue {self.player.name} dans ce jeu d'aventure !\nEntrez 'help' si vous avez besoin d'aide.\n"
         return self.text #DANS LES FICHIERS QUAND PRINT REMPLACER PAR MODIF GAME.TEXT
-
+    
+    #If the command is recognized (verified in treat_command), execute it (used in the methode treat_command of the Class Graphic)
     def execute_command(self, command, list_of_words):
-        """If the command is recognized (verified in treat_command), execute it (used in the methode treat_command of the Class Graphic)"""
         command.action(self, list_of_words, command.number_of_parameters)
 
 
-
+# Class of the graphical interface with tkinter
 class Graphic(tk.Tk, Game):
-    """Class of the graphical interface with tkinter"""
-
+    # The constructor.
     def __init__(self):
-        """The constructor."""
         tk.Tk.__init__(self)
         Game.__init__(self)
         self.title("Jeu d'Aventure")
-        self.geometry("800x800")
+        self.geometry("1000x700")
         self.background = PhotoImage(file = self.images["begining"])
         self.create_widgets()
 
+    #Create the widgets of the interface
     def create_widgets(self):
-        """Create the widgets of the interface"""
         # Background
         self.image_label = tk.Label(self, image = self.background)
         self.image_label.place(x=0, y=0, relwidth = 1, relheight = 1)
@@ -156,17 +161,17 @@ class Graphic(tk.Tk, Game):
         #Text area to enter the response
         self.answer_entry = tk.Entry(self, font=("Arial", 14), width=30)
         self.answer_entry.pack(pady=10)
-        # Button to submit the answer. This button is what calls the fonction treat_command.
+        # Button to submit the answer. This button is what calls the fonction treat_command. 
         self.submit_button = tk.Button(self, text="Soumettre", font=("Arial", 14), command=self.treat_command)
         self.submit_button.pack(pady=10)
 
+    #Process the answer and move to the next question
     def treat_command(self):
-        """Process the answer and move to the next question"""
         command_string = self.answer_entry.get()
 
         if self.nb == 1:
-            self.setup()
-
+            self.setup() 
+        
         elif self.nb == 0:
             self.player = Player(command_string)
 
@@ -184,22 +189,22 @@ class Graphic(tk.Tk, Game):
                 command = self.commands[command_word]
                 self.execute_command(command, list_of_words)
 
-        #If the game is not ended, update the graphical interface
+        #If the game is not ended, update the graphical interface 
         #(does not get the command from the player, it is the push of the submit_button that calls the treat_command)
         if not self.finished:
             self.update_widgets()
         else:
             self.end_game()
 
+    #Updates the displayed question
     def update_widgets(self):
-        """Updates the displayed question"""
         #increases the numbers of interactions
         self.nb = self.nb + 1
         # Clear the response entry (clear what was written by the player)
         self.answer_entry.delete(0, tk.END)
-        #Shows the new text / question
+        #Shows the new text / question 
         self.text_label.config(text=self.get_current_text())
-        #New image of the current room in the background
+        #New image of the current room in the background 
         if self.nb > 1 :
             self.background = PhotoImage(file = self.images[self.player.current_room.name]) #/self.images[self.player.current_room.name]
             self.image_label.config(image = self.background)
@@ -208,17 +213,18 @@ class Graphic(tk.Tk, Game):
             messagebox.showwarning(self.warning)
         self.warning = ""
 
+#OBLIGATOIRE : POUVOIR PERDRE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #End of game
     def end_game(self):
-        """End of game"""
         messagebox.showinfo(self.warning)#"Jeu terminé", f"Votre score final est : "#{self.get_score()}/{len(self.questions)}
         self.quit_game()
 
+    #Quit the game permanently
     def quit_game(self):
-        """Quit the game permanently"""
         self.destroy()
 
+# Start the game
 def main():
-    """Start the game"""
     # Create a game object and play the game
     jeu = Graphic()
     #displays the main window on the screen and then waits for the user to take an action.

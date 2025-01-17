@@ -1,4 +1,4 @@
-# This file contains the Item class.
+"""This file contains the Item class."""
 
 class Item:
     """
