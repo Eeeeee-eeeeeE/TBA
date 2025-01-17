@@ -52,7 +52,9 @@ class Room:
         for exit in self.exits.keys():
             if self.exits.get(exit) is not None:
                 exit_string += exit + ", "
+        print(exit_string)
         exit_string = exit_string.strip(", ")
+        print(exit_string)
         return exit_string
 
     # Return a long description of this room including exits.
