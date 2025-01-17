@@ -35,9 +35,3 @@ class Inventory:
                 for c in thing.characters.values() :
                     l = l + '- ' + "{0} : {1}".format(c.name, c.description) + '\n'
                 game.text = f"\nOn voit :\n{l}" + game.player.current_room.get_long_description() + game.player.get_history()
-
-    # Define the constructor. 
-    def __init__(self, type):
-        self.inventory_dict = {}
-        self.caracter_dict = {}
-        self.type = type

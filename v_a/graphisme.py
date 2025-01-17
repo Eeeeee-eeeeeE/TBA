@@ -55,59 +55,132 @@ class Game():
         self.commands["talk"] = talk
 
         # Setup rooms
-
-        wardrob_o = Room("wardrob_o", "la partie de gauche d'une grande salle lugubre sans fenêtre.")
+        
+        erlenmeyer = Room("Erlenmeyer", "une salle barba-intrigante et terrifiante. Vous êtes sur une table parsemée d'erlenmeyers qui vous semle géants et de poils de barbi-dur.")
+        self.rooms.append(erlenmeyer)
+        self.images['Erlenmeyer'] = 'Erlenmeyer.png'
+        realisation = Room("Realisation", "une salle très haute de plafond. Un escalier en collimasson aux marches de géant et parcemé de moutons de poussière de la taille de votre barba-bras se dessine devant vous.")
+        self.rooms.append(realisation)
+        self.images['Realisation'] = 'Realisation.png'
+        wardrob_o = Room("Wardrob_o", "une salle avec une armoire au nord qui cache une porte dérobée.")
         self.rooms.append(wardrob_o)
-        self.images['wardrob_o'] = 'wardrob_o.png'
-        wardrob_e = Room("wardrob_e", "la partie de droite d'une grande salle lugubre sans fenêtre.")
-        self.rooms.append(wardrob_e)
-        self.images['wardrob_e'] = 'wardrob_e.png'
-        enigma = Room("Enigma", "une salle modeste. Devant vous se tient un petit monsieur à l'air malicieux.")
+        self.images['Wardrob_o'] = 'Wardrob_o.png'
+        wardrob_e = Room("Wardrob_e", "la partie de droite d'une grande salle lugubre sans fenêtre.")
+        self.rooms.append(Wardrob_e)
+        self.images['Wardrob_e'] = 'Wardrob_e.png'
+        enigma = Room("Enigma", "une salle modeste. Devant vous se tient un petit barba-monsieur à l'air malicieux.")
         self.rooms.append(enigma)
         self.images['Enigma'] = 'Enigma.png'
-        nothing = Room("Nothing", "une salle vide.")
+        nothing = Room("Nothing", "une salle barba-vide.")
         self.rooms.append(nothing)
         self.images['Nothing'] = 'Nothing.png'
+        cyclop = Room("cyclop", "un terrier sombre.")
+        self.rooms.append(cyclop)
+        self.images['cyclop'] = 'Cyclop.png'
+        farm = Room("farm", "une partie du terrier où s'entassent des caméléons. Il semblerait que ce soit un élevage fait par, barba-barbarre, la marmotte borgne, elle les sort 2 fois par jour.")
+        self.rooms.append(farmdowtown)
+        self.images['farm'] = 'farm.png'
+
         brokenglass = Room("Brokenglass", "une salle dont le sol est couvert par une écatombe de fioles brisées. Le reflet du soleil sur ces fragments de verre brisé donne des couleurs irisées aux murs telle une mosaique des temps antiques.")
         self.rooms.append(brokenglass)
         self.images['Brokenglass'] = 'Brokenglass.png'
-        glitter = Room("Glitter", "une salle où se dresse au milieu une satue à paillettes rose. Cette statue représente un homme, environ la quarantaine et demi, barbu de 12 jours, petites lunettes losange sur un nez imposant, une interminablement longue blouse de scientifique sur le dos, et deux yeux roses.")
+        glitter = Room("Glitter", "une salle où se dresse au milieu une statue à paillettes rose. Cette statue représente un homme, environ la quarantaine et demi, barbu de 12 jours, petites lunettes losange sur un nez imposant, une interminablement longue blouse de scientifique sur le dos, et deux yeux roses.")
         self.rooms.append(glitter)
         self.images['Glitter'] = 'Glitter.png'
-        musty = Room("Musty", "une petit pièce humide et sombre. Les murs sont tapis d'une couche épaisse de moisissure.")
+        evil = Room("Evil", "un bureau sombre. Un vilain monsieur (un humain) est concentré. Des shémas de l'intestin grèle des barba-collègues sont dessinés sur les feuilles de son bureau.")
+        self.rooms.append(evil)
+        self.images['Evil'] = 'Evil.png'
+        potionbook = Room("Potionbook", "une bibliothèque barba-luggubre. Des grimoires s'entassent un peu partout, c'est le barba-foutoir.")
+        self.rooms.append(potionbook)
+        self.images['Potionbook'] = 'Potionbook.png'
+        musty = Room("Musty", "une petit pièce humide et sombre. Les murs sont tapis d'une couche barba-épaisse de moisissure.")
         self.rooms.append(musty)
         self.images['Musty'] = 'Musty.png'
         out = Room("Out", "une large pièce acceuillante vu sur un jardin. Il y fait un peu frais, le vent s'engouffre par le pas d'une petite porte dissimulée.")
         self.rooms.append(out)
         self.images['Out'] = 'Out.png'
+
         tree = Room("Tree", "une parcelle de terre sur laquelle s'élève un acassia centenaire. Gloire de la nature et de Gaya, son tron est épais comme une maison, ses branches ont la circonférence d'une centrale nucléaire et ses feuilles sont petite comme des petites libellules.  Malheureseument pour les dryades, cet arbre garde la trace de son exploitation : des balafres multiples décorent son tron.")
         self.rooms.append(tree)
         self.images['Tree'] = 'Tree.png'
-
+        monkey = Room("Monkey", "l'arbre, devant vous il y a une cabanne. Derrière celle-ci est caché un barba-singe qui semble s'être échappé de la salle des essais cliniques.")
+        self.rooms.append(monkey)
+        self.images['Monkey'] = 'Monkey.png'
+        bread = Room("Bread", "une étendu d'herbre. Chaque brin d'herbe vous arrive à l'épaule. Une miette de pain est juste devant vous.")
+        self.rooms.append(bread)
+        self.images['Bread'] = 'Bread.png'
+        storage = Room("Storage", "une grange.")
+        self.rooms.append(storage)
+        self.images['Storage'] = 'Storage.png'
 
         # Create exits for rooms
 
-        wardrob_o.exits = {"N" : brokenglass, "E" : wardrob_e, "S" : None, "O" : None, "U" : None, "D" : nothing}
-        wardrob_e.exits = {"N" : None, "E" : None, "S" : None, "O" : wardrob_o, "U" : None, "D" : enigma}
-        enigma.exits = {"N" : None, "E" : None, "S" : None, "O" : nothing, "U" : wardrob_e, "D" : None}
+        erlenmeyer.exits = {"N" : None, "E" : None, "S" : wardrob_e, "O" : realisation, "U" : None, "D" : None}
+        realisation.exits = {"N" : None, "E" : brokenglass, "S" : None , "O" : None, "U" : None, "D" : None}
+        wardrob_o.exits = {"N" : glitter, "E" : wardrob_e, "S" : None, "O" : None, "U" : None, "D" : None}
+        wardrob_e.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : enigma}
+        enigma.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : cyclop}
         nothing.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : wardrob_o, "D" : None}
-        brokenglass.exits = {"N" : None, "E" : glitter, "S" : wardrob_o, "O" : None, "U" : None, "D" : None}
-        glitter.exits = {"N" : None, "E" : None, "S" : None, "O" : brokenglass, "U" : None, "D" : out}
-        musty.exits = {"N" : None, "E" : out, "S" : None, "O" : None, "U" : None, "D" : None}
-        out.exits = {"N" : None, "E" : tree, "S" : None, "O" : musty, "U" : glitter, "D" : None}
-        tree.exits = {"N" : None, "E" : None, "S" : None, "O" : tree, "U" : None, "D" : None}
+        cyclop.exits = {"N" : None, "E" : farm, "S" : None, "O" : None, "U" : None, "D" : None}
+        farm.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : nothing, "D" : None}
+        
+        brokenglass.exits = {"N" : None, "E" : None, "S" : None, "O" : glitter, "U" : None, "D" : None}
+        glitter.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : evil, "D" : out}
+        evil.exits = {"N" : None, "E" : potionbook, "S" : None, "O" : None, "U" : None, "D" : glitter}
+        potionbook.exits = {"N" : None, "E" : None, "S" : None, "O" : evil, "U" : None, "D" : None}
+        musty.exits = {"N" : None, "E" : None, "S" : None, "O" : out, "U" : brokenglass, "D" : None}
+        out.exits = {"N" : None, "E" : musty, "S" : None, "O" : tree, "U" : glitter, "D" : None}
+        
+        tree.exits = {"N" : None, "E" : out, "S" : bread, "O" : None, "U" : monkey, "D" : None}
+        monkey = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : None, "D" : tree}
+        bread = {"N" : tree, "E" : None, "S" : None, "O" : storage, "U" : None, "D" : None}
+        storage = {"N" : lake, "E" : bread, "S" : None, "O" : None, "U" : None, "D" : None}
+        lake = {"N" : None, "E" : tree, "S" : storage, "O" : None, "U" : None, "D" : None}
 
         #Setup items of the rooms
-        truc = Item("truc", "un truc étrange", 50)
-        wardrob_o.inventory["truc"] = truc
-        brindille = Item("brindille", "un baton de bois à votre echelle", 0.2)
-        wardrob_o.inventory["brindille"] = brindille
+        
+        armoire = Item("armoire", "l'armoire entrouverte", 10000)
+        wardrob_o.inventory["armoire"] = armoire
+        cameleon = Item("cameleon", "un bébé caméléon", 50)
+        farm.inventory["cameleon"] = cameleon
+
+        bout_verre = Item("bout_verre", "une poignée de mini bouts de verres aussi jolis que des diaments", 0.2)
+        brokenglass.inventory["bout_verre"] = bout_verre
+        page = Item("page", "un bout de page déchiré avec griffonné dessus une recette de barba-pancake !grandissant! :\nfarine, eau, levure, banane", 0.2)
+        potionbook.inventory["page"] = page
+
+        seve = Item("seve", "une goutte de sève (issue du tronc)", 0.002)
+        tree.inventory["seve"] = seve
+        banane = Item("banane", "une barba-banane naine", 0.08)
+        monkey.inventory["banane"] = banane
+        pomme = Item("pomme", "un quartier de pomme ", 0.03)
+        storage.inventory["pomme"] = pomme
+        farine = Item("farine", "un petit reste de farine", 0.03)
+        storage.inventory["farine"] = farine
+        levure = Item("levure", "un petit reste de levure", 0.0005)
+        storage.inventory["levure"] = levure
+        sucre = Item("sucre", "une bonne poignée de grains de sucres", 0.0005)
+        storage.inventory["sucre"] = sucre
+        pomme = Item("pomme", "une pomme entière", 0.0005)
+        storage.inventory["pomme"] = pomme
+        eau = Item("eau", "une demi goutte d'eau", 0.005)
+        lake.inventory["eau"] = eau
+
 
         #Setup characters of the rooms
+
+        barba_petit = Character("barba_petit", "un barbapapa qui n'arrête pas de changer de forme", realisation, ["Bonjour", "Qui es-tu ?\nA : Je suis comme toi, je suis un barbapapa qui a rétréci.\nB : Je suis barba-perdu."], [realisation])
+        realisation.characters["barba_petit"] = barba_petit
         mister = Character("mister", "un mister étrange", wardrob_e, ["hola"], [wardrob_e, wardrob_o])
         wardrob_e.characters["mister"] = mister
-        harry = Character("harry", "un lapin ferroce", wardrob_e, ["tu es à croquer", "j t'aime bien (mm si je pref les carottes)"], [wardrob_e, wardrob_o])
-        wardrob_e.characters["harry"] = harry
+        marmotte = Character("marmotte", "un marmotte balèze", cyclop, ["A : Tu veux te battre avec moi ?\n B: Ou coopère et enfonce toi encore plus dans le terrier"], [cyclop, farm])
+        cyclop.characters["mister"] = marmotte
+
+        vilain = Character("vilain", "un monsieur à l'air vilain", evil, ["Hum", "Qui va là ? (il vous regarde droit dans les yeux mais ne vous voit pas grâce au caméléon qui vous rend invisible) Bon je ne voit personne."], [evil])
+        evil.characters["vilain"] = vilain
+
+        barba_monsieur = Character("barba_monsieur", "le barba-monsieur à l'air malicieux", enigma, ["Vous m'avez réveillé barba-fillou; Votre survie dépend maintenant de la réponse à cette question : Qu'est-ce qui est petit et qui barba-attend ? \na : Barbotine\nb : Barba-jonathan\nc : Vous\nd : Jonathan"], [enigma])
+        enigma.characters["barba_monsieur"] = barba_monsieur
 
         #Set of all the possible directions
         self.possible_direction = {k for r in self.rooms for k in r.exits.keys() }
