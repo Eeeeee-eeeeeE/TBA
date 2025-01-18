@@ -305,8 +305,9 @@ class Actions:
 
         #Calculates the weight of is currently in inventory
         total_weight = 0
-        for i in game.player.inventory.values() :
-            total_weight = total_weight + i.weight
+        for i in game.player.inventory.values():
+            if i is not None :
+                total_weight = total_weight + i.weight
         wanted_weight = total_weight + game.player.current_room.inventory.get(item_object).weight
         if  wanted_weight > game.player.inventory_weight_max :
             game.warning = MSG5.format(item=item_object)
