@@ -63,13 +63,13 @@ class Game():
         erlenmeyer = Room("Erlenmeyer", "une salle barba-intrigante et terrifiante. Vous êtes plus pécisément sur une table parsemée d'erlenmeyers qui vous semble géants et de poils de barbi-dur.")
         self.rooms.append(erlenmeyer)
         self.images['Erlenmeyer'] = 'Erlenmeyer.png'
-        realisation = Room("Realisation", "une salle très haute de plafond. Un escalier en colimaçon aux marches de géant et parcemé de moutons de poussière de la taille de votre barba-bras se dessine devant vous.")
+        realisation = Room("Realisation", "une salle très haute de plafond. Un escalier en colimaçon aux marches de géant et parcemé de moutons de poussière de la taille de votre barba-bras se dessine devant vous. Vous avez l'impression d'être au sommet d'une tour géante")
         self.rooms.append(realisation)
         self.images['Realisation'] = 'Realisation.png'
         wardrob_o = Room("WardrobeO", "une salle avec une armoire au nord qui cache une porte dérobée.")
         self.rooms.append(wardrob_o)
         self.images['WardrobeO'] = 'WardrobeO.png'
-        wardrob_e = Room("WardrobeE", "la partie de droite d'une grande salle lugubre sans fenêtre.")
+        wardrob_e = Room("WardrobeE", "la partie de droite d'une grande salle lugubre sans fenêtre de la tour.")
         self.rooms.append(wardrob_e)
         self.images['WardrobeE'] = 'WardrobeE.png'
         enigma = Room("Enigma", "une salle modeste. Devant vous se tient un petit barba-monsieur à l'air malicieux.")
