@@ -70,7 +70,7 @@ class Character(Beings):
                 game.text = "Il vous a vu et vous êtes mort."
                 game.text += f"Merci {game.player.name} d'avoir joué. Au revoir.\n"
                 q = "quit"
-                game.commands[q].action(game.command[q], [q], game.command[q].numbers)
+                game.commands[q].action(game.command[q], [q], game.command[q].number_of_parameters)
         #print the messages in a rotating manner
         msg = self.msgs.pop(0)
         player = game.player
