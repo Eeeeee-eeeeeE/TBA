@@ -321,7 +321,7 @@ class Actions:
         #Droop the object in the room.
         game.player.current_room.inventory[object] = game.player.inventory.get(object)
         del game.player.inventory[object]
-        game.text = f"\nVous avez déposé l'object {object}.\n" + player.current_room.get_long_description() + player.get_history()
+        game.text = f"\nVous avez déposé l'objet {object}.\n" + player.current_room.get_long_description() + player.get_history()
         return True
 
     def check(game, list_of_words, number_of_parameters):

@@ -59,7 +59,7 @@ class Game():
         self.commands["answer"] = answer
 
         # Setup rooms
-        
+       
         erlenmeyer = Room("Erlenmeyer", "une salle barba-intrigante et terrifiante. Vous êtes plus pécisément sur une table parsemée d'erlenmeyers qui vous semble géants et de poils de barbi-dur.")
         self.rooms.append(erlenmeyer)
         self.images['Erlenmeyer'] = 'Erlenmeyer.png'
@@ -78,10 +78,10 @@ class Game():
         nothing = Room("Nothing", "une salle barba-vide.")
         self.rooms.append(nothing)
         self.images['Nothing'] = 'Nothing.png'
-        cyclop = Room("cyclop", "un terrier sombre.")
+        cyclop = Room("Cyclop", "un terrier sombre.")
         self.rooms.append(cyclop)
-        self.images['cyclop'] = 'Cyclop.png'
-        farm = Room("farm", "une partie du terrier où s'entassent des caméléons. Il semblerait que ce soit un élevage fait par, barba-barbarre, la marmotte borgne, elle les sort 2 fois par jour.")
+        self.images['Cyclop'] = 'Cyclop.png'
+        farm = Room("Farm", "une partie du terrier où s'entassent des caméléons. Il semblerait que ce soit un élevage fait par, barba-barbarre, la marmotte borgne, elle les sort 2 fois par jour.")
         self.rooms.append(farm)
         self.images['Farm'] = 'Farm.png'
 
@@ -91,10 +91,10 @@ class Game():
         glitter = Room("Glitter", "une salle où se dresse au milieu une statue à paillettes rose. Cette statue représente un homme, environ la quarantaine et demi, barbu de 12 jours, petites lunettes losange sur un nez imposant, une interminablement longue blouse de scientifique sur le dos, et deux yeux roses.")
         self.rooms.append(glitter)
         self.images['Glitter'] = 'Glitter.png'
-        evil = Room("Evil", "un bureau sombre. Un vilain monsieur (un humain) est concentré. Des shémas de l'intestin grèle des barba-collègues sont dessinés sur les feuilles de son bureau.")
+        evil = Room("Evil", "un bureau sombre. Un vilain monsieur (un humain) est concentré. Des schémas de l'intestin grèle des barba-collègues sont dessinés sur les feuilles de son bureau.")
         self.rooms.append(evil)
         self.images['Evil'] = 'Evil.png'
-        potionbook = Room("Potionbook", "une bibliothèque barba-luggubre. Des grimoires s'entassent un peu partout, c'est le barba-foutoir.")
+        potionbook = Room("Potionbook", "une bibliothèque barba-lugubre. Des grimoires s'entassent un peu partout, c'est le barba-foutoir.")
         self.rooms.append(potionbook)
         self.images['Potionbook'] = 'Potionbook.png'
         musty = Room("Musty", "une petit pièce humide et sombre. Les murs sont tapis d'une couche barba-épaisse de moisissure.")
@@ -104,13 +104,13 @@ class Game():
         self.rooms.append(out)
         self.images['Out'] = 'Out.png'
 
-        tree = Room("Tree", "une parcelle de terre sur laquelle s'élève un acassia centenaire. Gloire de la nature et de Gaya, son tron est épais comme une maison, ses branches ont la circonférence d'une centrale nucléaire et ses feuilles sont petite comme des petites libellules.  Malheureseument pour les dryades, cet arbre garde la trace de son exploitation : des balafres multiples décorent son tron.")
+        tree = Room("Tree", "une parcelle de terre sur laquelle s'élève un acacia centenaire. Gloire de la nature et de Gaïa, son tronc est épais comme une maison, ses branches ont la circonférence d'une centrale nucléaire et ses feuilles sont petites comme des petites libellules.  Malheureusement pour les dryades, cet arbre garde la trace de son exploitation : des balafres multiples décorent son tronc.")
         self.rooms.append(tree)
         self.images['Tree'] = 'Tree.png'
-        monkey = Room("Monkey", "l'arbre, devant vous il y a une cabanne. Derrière celle-ci est caché un barba-singe qui semble s'être échappé de la salle des essais cliniques.")
+        monkey = Room("Monkey", "l'arbre, devant vous il y a une cabane. Derrière celle-ci est caché un barba-singe qui semble s'être échappé de la salle des essais cliniques.")
         self.rooms.append(monkey)
         self.images['Monkey'] = 'Monkey.png'
-        bread = Room("Bread", "une étendu d'herbre. Chaque brin d'herbe vous arrive à l'épaule. Une miette de pain est juste devant vous.")
+        bread = Room("Bread", "une étendue d'herbe. Chaque brin d'herbe vous arrive à l'épaule. Une miette de pain est juste devant vous.")
         self.rooms.append(bread)
         self.images['Bread'] = 'Bread.png'
         storage = Room("Storage", "une grange.")
@@ -137,8 +137,8 @@ class Game():
         nothing.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : wardrob_o, "D" : None}
         cyclop.exits = {"N" : None, "E" : farm, "S" : None, "O" : None, "U" : None, "D" : None}
         farm.exits = {"N" : None, "E" : None, "S" : None, "O" : None, "U" : nothing, "D" : None}
-        
-        
+       
+       
         musty.exits = {"N" : None, "E" : None, "S" : None, "O" : out, "U" : brokenglass, "D" : None}
         out.exits = {"N" : None, "E" : musty, "S" : None, "O" : tree, "U" : glitter, "D" : None}  
         tree.exits = {"N" : None, "E" : out, "S" : bread, "O" : None, "U" : monkey, "D" : None}
@@ -147,15 +147,15 @@ class Game():
         lake.exits = {"N" : None, "E" : tree, "S" : storage, "O" : None, "U" : None, "D" : None}
 
         #Setup items of the rooms
-        
+       
         armoire = Item("armoire", "l'armoire entrouverte", 10000)
         wardrob_o.inventory["armoire"] = armoire
         cameleon = Item("cameleon", "un bébé caméléon", 145)
         farm.inventory["cameleon"] = cameleon
 
-        verre = Item("verre", "une poignée de mini bouts de verres aussi jolis que des diaments", 10)
+        verre = Item("verre", "une poignée de mini bouts de verres aussi jolis que des diamants", 10)
         brokenglass.inventory["verre"] = verre
-        page = Item("page", "un bout de page déchiré avec griffonné dessus une recette de barba-pancake !grandissant! :\nfarine, eau, levure, banane", 0.1)
+        page = Item("page", "un bout de page déchiré avec griffonné dessus une recette de barba-pancake !grandissant! :\nfarine, eau, levure, banane, seve", 0.1)
         potionbook.inventory["page"] = page
 
         seve = Item("seve", "une goutte de sève (issue du tronc)", 10)
@@ -164,8 +164,8 @@ class Game():
         monkey.inventory["banane"] = banane
         farine = Item("farine", "un petit reste de farine", 50)
         storage.inventory["farine"] = farine
-        levure = Item("levure", "un petit reste de levure", 10)
-        storage.inventory["levure"] = levure
+        levure = Item("levure", "un petit reste de moisissure (de la levure ?))", 10)
+        musty.inventory["levure"] = levure
         sucre = Item("sucre", "une bonne poignée de grains de sucres", 14)
         storage.inventory["sucre"] = sucre
         pomme = Item("pomme", "une pomme entière", 300)
@@ -185,12 +185,12 @@ class Game():
         cyclop.characters["marmotte"] = marmotte
         marmotte.answers = ["b"]
 
-        vilain = Character("vilain", "un monsieur à l'air vilain", evil, ["Hum", "Qui va là ? (il vous regarde droit dans les yeux mais ne vous voit pas grâce au caméléon qui vous rend invisible) Bon je ne voit personne."], [evil])
+        vilain = Character("vilain", "un monsieur à l'air vilain", evil, ["Hum", "Qui va là ? (il vous regarde droit dans les yeux mais ne vous voit pas grâce au caméléon qui vous rend invisible) Bon je ne vois personne."], [evil])
         evil.characters["vilain"] = vilain
 
-        barbaaigri = Character("barbaaigri", "le barba-monsieur à l'air malicieux", enigma, ["Vous m'avez réveillé barba-filou;\nVotre survie dépend maintenant de la réponse à cette question : Qu'est-ce qui est petit et qui barba-attend ? \na : Barbotine\nb : Barba-jonathan\nc : Vous\nd : Jonathan"], [enigma])
+        barbaaigri = Character("barbaaigri", "le barba-monsieur à l'air malicieux", enigma, ["Vous m'avez réveillé barba-filou;\nVotre survie dépend maintenant de la réponse à cette 1ere question : Qu'est-ce qui est petit et qui barba-attend ? \na : Barbotine\nb : Barba-jonathan\nc : Vous\nd : Jonathan"], [enigma])
         enigma.characters["barbaaigri"] = barbaaigri
-        enigma.answers = ["c"]
+        barbaaigri.answers = ["c"]
 
         singe = Character("barba-singe", "un barba-singe qui s'est échappé des laboratoires", monkey, ["Prend cette banane", "Tu as juste a récupérer les bons ingrédiens pour t'en sortir"], [monkey, tree])
         monkey.characters["barba-singe"] = singe
@@ -273,14 +273,13 @@ class Graphic(tk.Tk, Game):
         #If the game is not ended, update the graphical interface
         #(does not get the command from the player, it is the push of the submit_button that calls the treat_command)
         if not self.finished:
-            #if ("farine" in self.player.inventory.keys() and "levure" in self.player.inventory.keys() and "eau" in self.player.inventory.keys() and "banane" in self.player.inventory.keys() and "seve" in self.player.inventory.keys()) : 
-            if ("verre" in self.player.inventory.keys()):
+            if ("farine" in self.player.inventory.keys() and "levure" in self.player.inventory.keys() and "eau" in self.player.inventory.keys() and "banane" in self.player.inventory.keys() and "seve" in self.player.inventory.keys()) :
                 score = self.nb
-                self.text = "Vous avez réussit à retrouver votre barba-taille d'origine, bravo. \nVotre score final est d'environ {score}!".format(score = score)
+                self.text = "Vous avez réussi à retrouver votre barba-taille d'origine, bravo. \nVous avez réussi le jeu en {score} commandes!".format(score = score)
                 self.warning = f"FELICITATION {self.player.name}"
                 self.background = PhotoImage(file = self.images["begining"])
                 self.finished = True
-            else: 
+            else:
                 self.update_widgets()
         if self.finished:
             self.end_game()
@@ -317,7 +316,7 @@ class Graphic(tk.Tk, Game):
 
 def main():
     """Start the game"""
-    # Create a game object and play the game
+    # Create a game objet and play the game
     jeu = Graphic()
     #displays the main window on the screen and then waits for the user to take an action.
     jeu.mainloop()

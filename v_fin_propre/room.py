@@ -29,8 +29,8 @@ class Room:
     1
 
     """
-    # Define the constructor. 
     def __init__(self, name, description):
+        """Define the constructor. """
         self.name = name
         self.description = description
         self.exits = {}

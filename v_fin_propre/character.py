@@ -5,6 +5,8 @@ import copy
 
 from beings import Beings #The parent class of Character
 
+# pylint: disable=too-many-positional-arguments
+# pylint: disable=too-many-arguments
 class Character(Beings):
     """
     This class represents a character.
@@ -15,6 +17,7 @@ class Character(Beings):
         current_room (Room): The current room.
         msgs (list): The list of the messages to print when interracting with the pnj.
         area (list): The list of the rooms that are accessible to the pnj.
+        answers(list): The list of the answers of the questions 
 
     Methods:
         __init__(self, name, description, action, current_room, msgs) : The constructor.
@@ -25,6 +28,7 @@ class Character(Beings):
     """
 
     def  __init__(self, name, description, current_room, msgs, area):
+        """The constructor"""
         Beings.__init__(self, name)
         self.current_room = current_room
         self.description = description
@@ -33,11 +37,12 @@ class Character(Beings):
         self.answers = []
 
     def __str__(self):
-        return  "{0} : {1}".format(self.name, self.description)
+        """The string representation of the item."""
+        return  f"{0} : {1}".format(self.name, self.description)
 
-    # Define the move method.
+
     def move(self):
-        """
+        """Define the move method.
         Characters have one chance out of two to go to an adjacent room or not. 
         """
         #The list of the rooms the pnj can go in
@@ -54,21 +59,18 @@ class Character(Beings):
         return False
 
     def get_msg(self, game):
-        """Donne."""
+        """Donne le message du pnj."""
 
         #if some conditions are met, a message is unlocked
-        if self.name == "mister" :
-            if "truc" in game.player.inventory :
-                self.msg.insert(0, "\n truc trop super important")
         if self.name == "vilain" :
             if "cameleon" not in game.player.inventory :
-                game.text = f"Il vous a vu et vous êtes mort."
+                game.text = "Il vous a vu et vous êtes mort."
                 game.text = game.text + f"Merci {game.player.name} d'avoir joué. Au revoir.\n"
                 q = "quit"
                 game.commands[q].action(game.command[q], [q], game.command[q].numbers)
         #print the messages in a rotating manner
         msg = self.msgs.pop(0)
-        game.text = "\n" + msg + "\n" 
+        game.text = "\n" + msg + "\n"
         game.text += game.player.current_room.get_long_description()
         game.text +=game.player.get_history()
         self.msgs.append(msg)

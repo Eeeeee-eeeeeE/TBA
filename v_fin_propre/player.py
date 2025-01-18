@@ -1,10 +1,12 @@
-# This file contains the Player class.
+"""This file contains the Player class."""
 
 from beings import Beings #The parent class of Player
 
-class Player():
+class Player(Beings):
     """
     This class represents a player.
+    A player is composed of a name, a current_room, an history,
+    its inventory and its inventory_weight_max.
 
     Attributes:
         name (str): Name of the player.
@@ -14,28 +16,28 @@ class Player():
 
     Methods:
         __init__(self, name) : The constructor.
-        move(self, direction) : Moves the player in the given direction, if possible.
+        move((self, direction, game)) : Moves the player in the given direction, if possible.
         get_history(self) : Return the history of where the player has been.
 
     """
 
-    # Define the constructor.
     def __init__(self, name):
+        """Define the constructor."""
         Beings.__init__(self, name)
         self.history = []
-        self.inventory = dict()
-        self.inventory_weight_max = 150 
-    
-    # Define the move method.
+        self.inventory = {}
+        self.inventory_weight_max = 200
+
     def move(self, direction, game):
+        """Define the move method."""
         # Get the next room from the exits dictionary of the current room.
         next_room = self.current_room.exits[direction]
 
         # If the next room is None, print an error message and return False.
         if next_room is None:
-            self.warning = ("\nAucune porte dans cette direction !\n")
+            self.warning ="\nAucune porte dans cette direction !\n"
             return False
-        
+
         #add current_room to the hitory before moving to another room
         self.history.append(self.current_room)
 
@@ -43,12 +45,13 @@ class Player():
         self.current_room = next_room
 
         # Display the description of the room and the history
-        game.text = self.current_room.get_long_description() + self.get_history()     
+        game.text = self.current_room.get_long_description() + self.get_history()
         return True
 
     def get_history(self):
+        """Return the history of the player"""
         l_room =''
         for r in self.history :
             description_split =r.description.split('.')
             l_room = l_room + '- ' + description_split[0] + '\n'
-        return f"Vous avez déjà visité les pièces suivantes:\n{l_room}"    
+        return f"Vous avez déjà visité les pièces suivantes:\n{l_room}"
