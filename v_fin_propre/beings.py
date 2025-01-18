@@ -14,6 +14,6 @@ class Beings:
     """
 
     def  __init__(self, name):
-        """The constructor.""""
+        """The constructor."""
         self.name = name
         self.current_room = None
