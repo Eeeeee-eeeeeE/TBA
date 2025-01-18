@@ -416,7 +416,7 @@ class Actions:
         #Print a message of the character.
         else : 
             if player.current_room.characters[pnj] == "barbaaigri":
-                game.player.current_room.characters[pnj].msgs.insert(0, "\nMouais, c'est ça. Bon bah là va down mais prend garde au une cyclope une fois dans le terrier, j'ai connu il fut un temps un bon monsieur qui s'appellait Ulysse, pense a prende ton mouton en sortant toi auss.")
+                game.player.current_room.characters[pnj].msgs.insert(0, "\nMouais, c'est ça. Bon bah là va down mais prend garde au une cyclope une fois dans le terrier, j'ai connu il fut un temps un bon monsieur qui s'appellait Ulysse, pense a prende ton mouton en sortant toi aussi.")
             else :
                 game.player.current_room.characters[pnj].msgs.insert(0, "\n Tout à fait. Bravo !")
             game.player.current_room.characters[pnj].get_msg(game)
