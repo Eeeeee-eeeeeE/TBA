@@ -69,8 +69,8 @@ class Character(Beings):
             if "cameleon" not in game.player.inventory :
                 game.text = "Il vous a vu et vous êtes mort."
                 game.text += f"Merci {game.player.name} d'avoir joué. Au revoir.\n"
-                quitting = game.command["quit"]
-                quitting.action(quitting, ["quit"], quitting.numbers)
+                q = "quit"
+                game.commands[q].action(game.command[q], [q], game.command[q].numbers)
         #print the messages in a rotating manner
         msg = self.msgs.pop(0)
         player = game.player
