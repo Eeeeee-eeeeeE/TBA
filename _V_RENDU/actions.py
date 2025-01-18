@@ -320,9 +320,9 @@ class Actions:
             return False
 
         #Put the object in the inventory.
-        game.player.inventory[object] = game.player.current_room.inventory.get(object)
-        del game.player.current_room.inventory[object]
-        game.text = f"\nVous avez pris l'object {object}.\n"
+        game.player.inventory[item_object] = game.player.current_room.inventory.get(item_object)
+        del game.player.current_room.inventory[item_object]
+        game.text = f"\nVous avez pris l'object {item_object}.\n"
         game.text += player.current_room.get_long_description()
         game.text += player.get_history()
         return True
