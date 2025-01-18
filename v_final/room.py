@@ -30,7 +30,6 @@ class Room:
     <class 'function'>
     >>> command.number_of_parameters
     1
-
     """
     # Define the constructor. 
     def __init__(self, name, description):
