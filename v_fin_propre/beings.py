@@ -1,5 +1,6 @@
-# This file contains the Beings class.
+"""This file contains the Beings class."""
 
+# pylint: disable=too-few-public-methods
 class Beings:
     """
     This class represents a being. It is the parent class of Character and Player.

@@ -1,10 +1,11 @@
-# This file contains the Character class.
+"""This file contains the Character class."""
 
-from beings import Beings #The parent class of Character
 import random
 import copy
 
-class Character:
+from beings import Beings #The parent class of Character
+
+class Character(Beings):
     """
     This class represents a character.
 
@@ -33,18 +34,18 @@ class Character:
 
     def __str__(self):
         return  "{0} : {1}".format(self.name, self.description)
-    
+
     # Define the move method.
-    def move(self): 
+    def move(self):
         """
         Characters have one chance out of two to go to an adjacent room or not. 
         """
-        #The list of the rooms the pnj can go in 
+        #The list of the rooms the pnj can go in
         rooms = copy.copy(self.area)
         rooms.remove(self.current_room)
-        
+
         #The pnj has a 1/3 probability of going in one of those rooms
-        if random.randint(0,2) == 1 and rooms != [] and rooms != None:
+        if random.randint(0,2) == 1 and rooms != [] and rooms is not None:
             room = random.choice(rooms)
             del self.current_room.characters[self.name]
             self.current_room = room
@@ -53,6 +54,8 @@ class Character:
         return False
 
     def get_msg(self, game):
+        """Donne."""
+
         #if some conditions are met, a message is unlocked
         if self.name == "mister" :
             if "truc" in game.player.inventory :
@@ -61,8 +64,11 @@ class Character:
             if "cameleon" not in game.player.inventory :
                 game.text = f"Il vous a vu et vous êtes mort."
                 game.text = game.text + f"Merci {game.player.name} d'avoir joué. Au revoir.\n"
-                game.commands["quit"].action(game.command["quit"], ["quit"], game.command["quit"].numbers)
+                q = "quit"
+                game.commands[q].action(game.command[q], [q], game.command[q].numbers)
         #print the messages in a rotating manner
         msg = self.msgs.pop(0)
-        game.text = "\n" + msg + "\n" + game.player.current_room.get_long_description() + game.player.get_history()
-        self.msgs.append(msg) 
+        game.text = "\n" + msg + "\n" 
+        game.text += game.player.current_room.get_long_description()
+        game.text +=game.player.get_history()
+        self.msgs.append(msg)
